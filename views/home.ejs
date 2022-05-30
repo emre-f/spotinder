@@ -10,13 +10,15 @@
     <link rel="stylesheet" href="/stylesheets/home.css">
 </head>
 
+
 <body class="d-flex text-center text-white">
+    <canvas id="backgroundCanvas"></canvas>
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
         <header class="mb-auto">
             <div>
                 <h3 class="float-md-left mb-0">Spotinder</h3>
                 <nav class="nav nav-masthead justify-content-center float-md-right">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
                     <% if(!accessTokenPresent) { %>
                     <a class="nav-link" href="/auth">Authenticate with Spotify</a>
                     <% } else { %>
@@ -30,11 +32,11 @@
             <p class="lead"> Welcome to Spotinder! <br> See how well two users or playlists match <br>
             </p>
             <div style="text-align: center;">
-                <a href="/campgrounds" style="margin:5px" class="btn btn-lg btn-secondary font-weight-bold 
+                <a href="/playlists" style="margin:5px" class="btn btn-lg btn-secondary font-weight-bold 
                         <% if(!accessTokenPresent) { %> disabled <% } %>">
                     Compare Playlists
                 </a>
-                <a href="/campgrounds" style="margin:5px" class="btn btn-lg btn-secondary font-weight-bold 
+                <a href="/users" style="margin:5px" class="btn btn-lg btn-secondary font-weight-bold 
                         <% if(!accessTokenPresent) { %> disabled <% } %>">
                     Compare Users
                 </a>
@@ -53,13 +55,17 @@
 
     </div>
 
-
+    <script>
+        const dotColor = '#1DB954';
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
         crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
         integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
         crossorigin="anonymous"></script>
+    <script src="/javascripts/backgroundCanvas.js">
+    </script>
 </body>
 
 </html>

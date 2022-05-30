@@ -6,7 +6,8 @@ const ejsMate = require('ejs-mate');
 const session = require('express-session');
 require('dotenv').config();
 
-const authenticateRoute = require('./authenticate');
+const authenticateRoute = require('./routes/authenticate');
+const playlistMatchRoute = require('./routes/playlistMatch')
 const { access } = require('fs');
 
 const app = express();
@@ -40,6 +41,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/auth', authenticateRoute);
+app.use('/playlists', playlistMatchRoute);
 
 app.get('/callback', (req, res) => {
     res.return('The wrong callback!')
