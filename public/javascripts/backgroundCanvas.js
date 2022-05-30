@@ -33,8 +33,8 @@ for (var i = 0; i < x; i++) {
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
     radius: Math.random() * 1 + 1,
-    vx: Math.floor(Math.random() * 50) - 25,
-    vy: Math.floor(Math.random() * 50) - 25,
+    vx: Math.floor(Math.random() * 30) - 25,
+    vy: Math.floor(Math.random() * 30) - 25,
     opacity: 1 // the color opacity
   });
 }
@@ -42,7 +42,6 @@ for (var i = 0; i < x; i++) {
 // Draw the scene
 
 function draw() {
-    console.log(mouse)
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
@@ -67,7 +66,7 @@ function draw() {
   for (var i = 0, x = stars.length; i < x; i++) {
     var starI = stars[i];
     ctx.moveTo(starI.x,starI.y); 
-    if(distance(mouse, starI) < 200) ctx.lineTo(mouse.x, mouse.y);
+    if(distance(mouse, starI) < 100) ctx.lineTo(mouse.x, mouse.y);
     for (var j = 0, x = stars.length; j < x; j++) {
       var starII = stars[j];
       if(distance(starI, starII) < 100) {
@@ -140,8 +139,8 @@ function update() {
                         x: Math.random() * canvas.width,
                         y: Math.random() * canvas.height,
                         radius: Math.random() * 1 + 1,
-                        vx: Math.floor(Math.random() * 50) - 25,
-                        vy: Math.floor(Math.random() * 50) - 25,
+                        vx: Math.floor(Math.random() * 30) - 25,
+                        vy: Math.floor(Math.random() * 30) - 25,
                         opacity: 0 // start at 0, will slowly appear
                     }
                     

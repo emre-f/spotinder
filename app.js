@@ -34,7 +34,7 @@ app.use((req, res, next) => {
 //
 
 app.get('/', (req, res) => {
-    let accessToken = req.session.accessToken
+    let accessToken = req.session.accessToken;
     let accessTokenPresent = accessToken !== undefined;
     console.log("The token: ", accessToken)
     res.render('home', { accessTokenPresent })
