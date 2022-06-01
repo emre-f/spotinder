@@ -33,8 +33,8 @@ for (var i = 0; i < x; i++) {
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
     radius: Math.random() * 1 + 1,
-    vx: Math.floor(Math.random() * 30) - 25,
-    vy: Math.floor(Math.random() * 30) - 25,
+    vx: Math.floor(Math.random() * 30) - 15,
+    vy: Math.floor(Math.random() * 30) - 15,
     opacity: 1 // the color opacity
   });
 }
@@ -139,8 +139,8 @@ function update() {
                         x: Math.random() * canvas.width,
                         y: Math.random() * canvas.height,
                         radius: Math.random() * 1 + 1,
-                        vx: Math.floor(Math.random() * 30) - 25,
-                        vy: Math.floor(Math.random() * 30) - 25,
+                        vx: Math.floor(Math.random() * 30) - 15,
+                        vy: Math.floor(Math.random() * 30) - 15,
                         opacity: 0 // start at 0, will slowly appear
                     }
                     

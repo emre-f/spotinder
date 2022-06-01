@@ -22,7 +22,7 @@
                     <% if(!accessTokenPresent) { %>
                     <a class="nav-link" href="/auth">Authenticate with Spotify</a>
                     <% } else { %>
-                    <!-- <a class="nav-link" href="/logout">Logout</a> -->
+                    <a class="nav-link" href="/logout">Logout</a>
                     <% } %>
                 </nav>
             </div>
@@ -32,12 +32,12 @@
             <p class="lead"> Welcome to Spotinder! <br> See how well two users or playlists match <br>
             </p>
             <div style="text-align: center;">
-                <a href="/playlists" style="margin:5px" class="btn btn-lg btn-secondary font-weight-bold 
+                <a href="/playlists" style="margin:5px" class="homeButton btn btn-lg btn-secondary font-weight-bold 
                         <% if(!accessTokenPresent) { %> disabled <% } %>">
                     Compare Playlists
                 </a>
-                <a href="/users" style="margin:5px" class="btn btn-lg btn-secondary font-weight-bold 
-                        <% if(!accessTokenPresent) { %> disabled <% } %>">
+                <a href="/users" style="margin:5px" class="homeButton btn btn-lg btn-secondary font-weight-bold 
+                        <% if(!accessTokenPresent) { %> disabled <% } %> disabled">
                     Compare Users
                 </a>
             </div>

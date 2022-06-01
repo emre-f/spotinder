@@ -17,11 +17,12 @@
 
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
 
-        <header class="mb-auto">
+        <header class="" style="margin-bottom:100px">
             <div>
-                <h3 class="float-md-left mb-0">Spotinder: Playlist Match</h3>
+                <h3 class="float-md-left mb-0">Spotinder: Playlist Match Results</h3>
                 <nav class="nav nav-masthead justify-content-center float-md-right">
                     <a class="nav-link active" aria-current="page" href="/"> Home </a>
+                    <a class="nav-link active" aria-current="page" href="/playlists"> Go Back </a>
                     <% if(!accessTokenPresent) { %>
                     <a class="nav-link" href="/auth">Authenticate with Spotify</a>
                     <% } else { %>
@@ -31,43 +32,45 @@
             </div>
         </header>
 
-        <main class="px-3">
-            <% if(error && error.length) {%>
-                <div class="w-50 container alert alert-dismissible fade show" role="alert">
-                    <%= error %>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            <% } %>
+        <main>
 
-            <form action="/playlists/validate" method="GET">
-                <input type="hidden" name="accessToken" id="accessToken" value="<%= accessToken %>">
-                <div class="w-50 container" style="padding:0;">
-                    <p class="lead" style="display: flex; font-size: 25px; font-weight: 500 ;"> Link to Playlist 1 </p>
+            <div class="" style="padding:0; margin:0;">
+                <div class="row justify-content-between" style="padding:0;">
+                  <div class="col-sm-4" style="padding:0;">
 
-                    <div class="input-group mb-3 container input-container" style="padding: 0;">
-                        <span class="input-group-text">open.spotify.com/playlist/</span>
-                        <input type="text" name="playlistOneId" id="playlistOneId" class="form-control" 
-                               placeholder="Playlist ID" aria-label="Playlist ID" aria-describedby="button-addon2" required>
+                    <div class="firstPlaylistResult">
+                        <p class="lead" style="font-size: 30px; font-weight: 500 ;"> Playlist 1 </p>
+        
+                        <div class="input-group w-5 h-5 align-items-center justify-content-center" style="padding: 0;">
+                            <span class="input-group-text">Name:</span>
+                            <span class="input-group-text form-control"><%= playlistOneData?.name %></span>
+                        </div>
                     </div>
-                </div>
-                <br><br>
-                <div class="w-50 container" style="padding:0;">
-                    <p class="lead" style="display: flex; font-size: 25px; font-weight: 500;"> Link to Playlist 2 </p>
 
-                    <div class="input-group mb-3 container input-container" style="padding: 0;">
-                        <span class="input-group-text">open.spotify.com/playlist/</span>
-                        <input type="text" name="playlistTwoId" id="playlistTwoId" class="form-control" 
-                               placeholder="Playlist ID" aria-label="Playlist ID" aria-describedby="button-addon2" required>
+                  </div>
+                  <div class="col-sm-4" style="padding:0;">
+
+                    <div class="SecondPlaylistResult">
+                        <p class="lead" style="font-size: 30px; font-weight: 500 ;"> Playlist 2 </p>
+        
+                        <div class="input-group mb-3 container" style="padding: 0;">
+                            <span class="input-group-text">Name:</span>
+                            <span class="input-group-text form-control"><%= playlistTwoData?.name %></span>
+                        </div>
                     </div>
+
+                  </div>
                 </div>
-            
-                <br>
-                <button class="comparePlaylistButton btn btn-lg btn-secondary font-weight-bold <% if(!accessTokenPresent) { %> disabled <% } %>">
-                    Match
-                </button>
-            </form>
+              </div>
+
+              <!-- <div class="SecondPlaylistResult" style="margin-right: auto; width: 33%; padding:0;">
+                <p class="lead" style="display: flex; font-size: 30px; font-weight: 500 ;"> Playlist 2: </p>
+
+                <div class="input-group mb-3 container" style="padding: 0;">
+                    <span class="input-group-text">Name:</span>
+                    <span class="input-group-text form-control"><%= playlistTwoData?.name %></span>
+                </div>
+            </div> -->
         </main>
 
         <footer class="mt-auto text-white-50">
