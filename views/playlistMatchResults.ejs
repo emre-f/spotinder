@@ -52,9 +52,9 @@
                     <br><p class="lead" style="font-size: 20px;"> Top Genres: </p>
 
                     <ul style="list-style: none; padding: 0;">
-                        <li><p class="lead">Coffee</p></li>
-                        <li><p class="lead">Coffee</p></li>
-                        <li><p class="lead">Coffee</p></li>
+                        <% for (let i = 0; i < playlistOneGenres.length; i++) { %>
+                            <li><p class="lead"> <%= playlistOneGenres[i][0] %>: <%= playlistOneGenres[i][1] %> </p></li>
+                        <% } %>
                     </ul>
 
                   </div>
@@ -74,9 +74,9 @@
                     <br><p class="lead" style="font-size: 20px;"> Top Genres: </p>
 
                     <ul style="list-style: none; padding: 0;">
-                        <li><p class="lead">Coffee</p></li>
-                        <li><p class="lead">Coffee</p></li>
-                        <li><p class="lead">Coffee</p></li>
+                        <% for (let i = 0; i < playlistTwoGenres.length; i++) { %>
+                            <li><p class="lead"> <%= playlistTwoGenres[i][0] %>: <%= playlistTwoGenres[i][1] %> </p></li>
+                        <% } %>
                     </ul>
 
                   </div>
