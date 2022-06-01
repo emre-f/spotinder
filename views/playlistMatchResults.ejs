@@ -36,41 +36,52 @@
 
             <div class="" style="padding:0; margin:0;">
                 <div class="row justify-content-between" style="padding:0;">
+
                   <div class="col-sm-4" style="padding:0;">
 
                     <div class="firstPlaylistResult">
                         <p class="lead" style="font-size: 30px; font-weight: 500 ;"> Playlist 1 </p>
         
-                        <div class="input-group w-5 h-5 align-items-center justify-content-center" style="padding: 0;">
+                        <div class="input-group w-5 h-5 align-items-center justify-content-center">
                             <span class="input-group-text">Name:</span>
                             <span class="input-group-text form-control"><%= playlistOneData?.name %></span>
                         </div>
                     </div>
 
+                    <br><p class="lead" style="font-size: 20px;"> Followers: <%= playlistOneData?.followers.total %>  </p>
+                    <br><p class="lead" style="font-size: 20px;"> Top Genres: </p>
+
+                    <ul style="list-style: none; padding: 0;">
+                        <li><p class="lead">Coffee</p></li>
+                        <li><p class="lead">Coffee</p></li>
+                        <li><p class="lead">Coffee</p></li>
+                    </ul>
+
                   </div>
+
                   <div class="col-sm-4" style="padding:0;">
 
-                    <div class="SecondPlaylistResult">
+                    <div class="secondPlaylistResult">
                         <p class="lead" style="font-size: 30px; font-weight: 500 ;"> Playlist 2 </p>
         
-                        <div class="input-group mb-3 container" style="padding: 0;">
+                        <div class="input-group w-5 h-5 align-items-center justify-content-center">
                             <span class="input-group-text">Name:</span>
                             <span class="input-group-text form-control"><%= playlistTwoData?.name %></span>
                         </div>
                     </div>
 
+                    <br><p class="lead" style="font-size: 20px;"> Followers: <%= playlistTwoData?.followers.total %>  </p>
+                    <br><p class="lead" style="font-size: 20px;"> Top Genres: </p>
+
+                    <ul style="list-style: none; padding: 0;">
+                        <li><p class="lead">Coffee</p></li>
+                        <li><p class="lead">Coffee</p></li>
+                        <li><p class="lead">Coffee</p></li>
+                    </ul>
+
                   </div>
                 </div>
-              </div>
 
-              <!-- <div class="SecondPlaylistResult" style="margin-right: auto; width: 33%; padding:0;">
-                <p class="lead" style="display: flex; font-size: 30px; font-weight: 500 ;"> Playlist 2: </p>
-
-                <div class="input-group mb-3 container" style="padding: 0;">
-                    <span class="input-group-text">Name:</span>
-                    <span class="input-group-text form-control"><%= playlistTwoData?.name %></span>
-                </div>
-            </div> -->
         </main>
 
         <footer class="mt-auto text-white-50">

@@ -94,7 +94,7 @@ body {
 }
 
 /* animations for playlist compare page */
-.firstPlaylistResult {
+.firstPlaylistResult, .secondPlaylistResult {
     opacity: 0.5;
     animation-delay: 2s;
     animation-name: fadeIn;

@@ -74,10 +74,34 @@ router.route('/validate')
             res.render('playlistMatch', { accessToken, accessTokenPresent, error })
         }
 
+        printer();
+
         res.render('playlistMatchResults', { accessToken, accessTokenPresent, playlistOneData, playlistTwoData })
     })
 
 module.exports = router;
+
+// From the top 100 songs, get artists (with counts, to send less requests). Then get genres for all artists, multiply with count and return result.
+function getTopGenres (accessToken, playlistData) {
+    console.log("hi");
+    try {
+        axiosResponse = await axios.get(`https://api.spotify.com/v1/playlists/${playlistOneId}`, { 
+            headers: {
+                'Content-Type': 'application-json',
+                'Authorization': `Bearer ${accessToken}`
+            }});
+    } catch (e) {
+        console.log("Caught an error for playlist 1")
+        console.log(e.response.data.error)
+
+        var playlistOneFailed = true;
+    } finally {
+        if (!playlistOneFailed) { 
+            console.log("Playlist 1 is valid, name: ", axiosResponse.data.name) 
+            var playlistOneData = axiosResponse.data;
+        }
+    }
+}
 
 // Old way to get axios get request
 // axios({
