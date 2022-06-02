@@ -107,3 +107,28 @@ body {
     from {opacity: 0.0;}
     to {opacity: 1.0;}
 }
+
+.artistName {
+    font-weight: 500; 
+    text-align:center;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
+    margin: 0;
+}
+
+.countValue {
+    font-weight: 400; 
+    text-align:center; 
+    margin: 0;
+
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
+}
+
+.topResults {
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
+}

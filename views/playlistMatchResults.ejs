@@ -12,75 +12,221 @@
 
 
 <body class="d-flex text-center text-white">
-    
+
     <canvas id="backgroundCanvas"></canvas>
 
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
 
-        <header class="" style="margin-bottom:100px">
+        <header class="" style="margin-bottom:20px">
             <div>
                 <h3 class="float-md-left mb-0">Spotinder: Playlist Match Results</h3>
                 <nav class="nav nav-masthead justify-content-center float-md-right">
                     <a class="nav-link active" aria-current="page" href="/"> Home </a>
                     <a class="nav-link active" aria-current="page" href="/playlists"> Go Back </a>
                     <% if(!accessTokenPresent) { %>
-                    <a class="nav-link" href="/auth">Authenticate with Spotify</a>
-                    <% } else { %>
-                    <!-- <a class="nav-link" href="/logout">Logout</a> -->
-                    <% } %>
+                        <a class="nav-link" href="/auth">Authenticate with Spotify</a>
+                        <% } else { %>
+                            <!-- <a class="nav-link" href="/logout">Logout</a> -->
+                            <% } %>
                 </nav>
             </div>
         </header>
 
         <main>
 
-            <div class="" style="padding:0; margin:0;">
-                <div class="row justify-content-between" style="padding:0;">
 
-                  <div class="col-sm-4" style="padding:0;">
 
-                    <div class="firstPlaylistResult">
-                        <p class="lead" style="font-size: 30px; font-weight: 500 ;"> Playlist 1 </p>
-        
-                        <div class="input-group w-5 h-5 align-items-center justify-content-center">
-                            <span class="input-group-text">Name:</span>
-                            <span class="input-group-text form-control"><%= playlistOneData?.name %></span>
-                        </div>
-                    </div>
-
-                    <br><p class="lead" style="font-size: 20px;"> Followers: <%= playlistOneData?.followers.total %>  </p>
-                    <br><p class="lead" style="font-size: 20px;"> Top Genres: </p>
-
-                    <ul style="list-style: none; padding: 0;">
-                        <% for (let i = 0; i < playlistOneGenres.length; i++) { %>
-                            <li><p class="lead"> <%= playlistOneGenres[i][0] %>: <%= playlistOneGenres[i][1] %> </p></li>
-                        <% } %>
-                    </ul>
-
-                  </div>
-
-                  <div class="col-sm-4" style="padding:0;">
-
-                    <div class="secondPlaylistResult">
-                        <p class="lead" style="font-size: 30px; font-weight: 500 ;"> Playlist 2 </p>
-        
-                        <div class="input-group w-5 h-5 align-items-center justify-content-center">
-                            <span class="input-group-text">Name:</span>
-                            <span class="input-group-text form-control"><%= playlistTwoData?.name %></span>
-                        </div>
-                    </div>
-
-                    <br><p class="lead" style="font-size: 20px;"> Followers: <%= playlistTwoData?.followers.total %>  </p>
-                    <br><p class="lead" style="font-size: 20px;"> Top Genres: </p>
-
-                    <ul style="list-style: none; padding: 0;">
-                        <% for (let i = 0; i < playlistTwoGenres.length; i++) { %>
-                            <li><p class="lead"> <%= playlistTwoGenres[i][0] %>: <%= playlistTwoGenres[i][1] %> </p></li>
-                        <% } %>
-                    </ul>
-
-                  </div>
+            <!-- TITLES -->
+            <div class="row justify-content-between" style="padding:0;">
+                <div class="col-sm-5" style="padding:0;">
+                    <p class="lead" style="font-size: 30px; font-weight: 500 ;"> Playlist 1 </p>
                 </div>
+                <div class="col-sm-5" style="padding:0;">
+                    <p class="lead" style="font-size: 30px; font-weight: 500 ;"> Playlist 2 </p>
+                </div>
+            </div>
+
+
+
+            <!-- INTRODUCTORY INFORMATION -->
+            <div class="row justify-content-between" style="padding:0;">
+                <div class="col-sm-5" style="padding:0;">
+                    <div class="input-group w-5 h-5 align-items-center justify-content-center">
+                        <span class="topResults input-group-text form-control">
+                            <%= playlistOneData?.name %>
+                        </span>
+                        <span class="topResults input-group-text form-control" style="display:block;">
+                            <%= playlistOneData?.followers.total %> Followers
+                        </span>
+                        <span class="topResults input-group-text form-control"
+                            style="display:block; text-align:right;">
+                            <%= playlistOneData?.owner.display_name %>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-sm-5" style="padding:0;">
+                    <div class="input-group w-5 h-5 align-items-center justify-content-center">
+                        <span class="topResults input-group-text form-control">
+                            <%= playlistTwoData?.owner.display_name %>
+                        </span>
+                        <span class="topResults input-group-text form-control" style="display:block;">
+                            <%= playlistTwoData?.followers.total %> Followers
+                        </span>
+                        <span class="topResults input-group-text form-control"
+                            style="display:block; text-align:right;">
+                            <%= playlistTwoData?.name %>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- RECENT SONGS --> <br><br>
+            <div class="row justify-content-between" style="padding:0;">
+                <div class="col-sm-5" style="padding:0;">
+                    <div class="row">
+                        <% for (let i=Math.min(4, playlistOneRecentTracks.length - 1); i>= 0 ; i--) { %>
+                            <div class="col" style="max-width:160px">
+                                <p class="artistName lead">
+                                    <%= playlistOneRecentTracks[i][1].name %>
+                                </p>
+                                <p class="countValue lead" style="font-size:1.1rem;">
+                                    <%= playlistOneRecentTracks[i][1].artists[0].name %>
+                                </p>
+
+                                <img src="<%= playlistOneRecentTracks[i][1].album.images[1].url %>"
+                                    style="margin-top: 1rem; width:120px; height: 120px; border: 1px solid rgba(255, 255, 255, 0.5);"
+                                    alt="artistImage" />
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+                <div class="col-sm-2" style="padding:0; display: table;"> 
+                    <div class="centeredDiv" style="display:table-cell; vertical-align:middle;"> 
+                        <p class="artistName lead"> Songs </p>
+                        <p class="artistName lead" style="font-size:1.1rem;"> Total </p>
+                        <p class="countValue lead" style="font-size:1.1rem;"> <%= playlistOneSongCount %> | <%= playlistTwoSongCount %> </p>
+                        <p class="countValue lead" style="font-size:1rem; font-style: italic;"> Showing most recent songs... </p>
+                    </div>
+                </div>
+
+                <div class="col-sm-5" style="padding:0;">
+                    <div class="row">
+                        <% for (let i=0; i < Math.min(5, playlistTwoRecentTracks.length); i++) { %>
+                            <div class="col" style="max-width:160px;">
+                                <p class="artistName lead">
+                                    <%= playlistTwoRecentTracks[i][1].name %>
+                                </p>
+                                <p class="countValue lead" style="font-size:1.1rem;">
+                                    <%= playlistTwoRecentTracks[i][1].artists[0].name %>
+                                </p>
+
+                                <img src="<%= playlistTwoRecentTracks[i][1].album.images[1].url %>"
+                                    style="margin-top: 1rem; width:120px; height: 120px; border: 1px solid rgba(255, 255, 255, 0.5);"
+                                    alt="artistImage" />
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- ARTISTS --> <br><br>
+            <div class="row justify-content-between" style="padding:0;">
+                <div class="col-sm-5" style="padding:0;">
+                    <div class="row">
+                        <% for (let i=Math.min(4, playlistOneArtistCount.length - 1); i>= 0 ; i--) { %>
+                            <div class="col" style="max-width:160px">
+                                <p class="artistName lead">
+                                    <%= playlistOneArtistCount[i][0].name %>
+                                </p>
+                                <p class="countValue lead">
+                                    <%= playlistOneArtistCount[i][1] %>
+                                </p>
+
+                                <img src="<%= playlistOneArtistCount[i][0].images[2].url %>"
+                                    style="margin-top: 1rem; width:120px; height: 120px; border: 1px solid rgba(255, 255, 255, 0.5);"
+                                    alt="artistImage" />
+                            </div>
+                            <% } %>
+                    </div>
+                </div>
+                <div class="col-sm-2" style="padding:0; display: table;">
+                    <div class="centeredDiv" style="display:table-cell; vertical-align:middle;"> 
+                        <p class="artistName lead"> Artists </p>
+                        <p class="artistName lead" style="font-size:1.1rem;"> Unique Artists </p>
+                        <p class="countValue lead" style="font-size:1.1rem;"> <%= playlistOneArtistCount.length %> | <%= playlistTwoArtistCount.length %> </p>
+                        <p class="countValue lead" style="font-size:1rem; font-style: italic;"> Showing top five artists... </p>
+                    </div>
+                </div>
+                <div class="col-sm-5" style="padding:0;">
+                    <div class="row">
+                        <% for (let i=0; i < Math.min(5, playlistTwoArtistCount.length); i++) { %>
+                            <div class="col" style="max-width:160px">
+                                <p class="artistName lead">
+                                    <%= playlistTwoArtistCount[i][0].name %>
+                                </p>
+                                <p class="countValue lead">
+                                    <%= playlistTwoArtistCount[i][1] %>
+                                </p>
+
+                                <img src="<%= playlistTwoArtistCount[i][0].images[2].url %>"
+                                    style="margin-top: 1rem; width:120px; height: 120px; border: 1px solid rgba(255, 255, 255, 0.5);"
+                                    alt="artistImage" />
+                            </div>
+                            <% } %>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- GENRES --> <br><br>
+            <div class="row justify-content-between" style="padding:0;">
+                <div class="col-sm-5" style="padding:0; display: table;">
+                    <div style="display:table-cell; vertical-align:middle;">
+                        <div class="row">
+                            <% for (let i=Math.min(4, playlistOneGenres.length); i>= 0 ; i--) { %>
+                                <div class="col" style="max-width:160px;">
+                                    <p class="artistName lead">
+                                        <%= playlistOneGenres[i][0] %>
+                                    </p>
+                                    <p class="countValue lead">
+                                        <%= playlistOneGenres[i][1] %>
+                                    </p>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2" style="padding:0; display: table;">
+                    <div class="centeredDiv" style="display:table-cell; vertical-align:middle;"> 
+                        <p class="artistName lead"> Genres </p>
+                        <p class="artistName lead" style="font-size:1.1rem;"> Unique Genres </p>
+                        <p class="countValue lead" style="font-size:1.1rem;"> <%= playlistOneGenreCount %> | <%= playlistTwoGenreCount %> </p>
+                        <p class="countValue lead" style="font-size:1rem; font-style: italic;"> Showing top five genres... </p>
+                    </div>
+                </div>
+                <div class="col-sm-5" style="padding:0; display: table;">
+                    <div style="display:table-cell; vertical-align:middle;">
+                        <div class="row">
+                            <% for (let i=0; i < Math.min(5, playlistTwoGenres.length); i++) { %>
+                                <div class="col" style="max-width:160px;">
+                                    <p class="artistName lead">
+                                        <%= playlistTwoGenres[i][0] %>
+                                    </p>
+                                    <p class="countValue lead">
+                                        <%= playlistTwoGenres[i][1] %>
+                                    </p>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </main>
 
