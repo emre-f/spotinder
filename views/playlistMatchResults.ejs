@@ -18,10 +18,16 @@
 
         <header class="" style="margin-bottom:20px">
             <div>
-                <h3 class="float-md-left mb-0">Spotinder: Playlist Match Results</h3>
+                <h3 class="float-md-left mb-0">Spotinder: 
+                    <% if (returnPoint == "/users") { %>
+                        User Match Results
+                    <% } else if (returnPoint == "/playlists") { %>
+                        Playlist Match Results
+                    <% } %>
+                </h3>
                 <nav class="nav nav-masthead justify-content-center float-md-right">
                     <a class="nav-link active" aria-current="page" href="/"> Home </a>
-                    <a class="nav-link active" aria-current="page" href="/playlists"> Go Back </a>
+                    <a class="nav-link active" aria-current="page" href="<%= returnPoint %>"> Go Back </a>
                     <% if(!accessTokenPresent) { %>
                         <a class="nav-link" href="/auth">Authenticate with Spotify</a>
                         <% } else { %>
@@ -38,10 +44,10 @@
             <!-- TITLES -->
             <div class="row justify-content-between" style="padding:0;">
                 <div class="col-sm-5" style="padding:0;">
-                    <p class="lead" style="font-size: 30px; font-weight: 500 ;"> Playlist 1 </p>
+                    <p class="lead possibleOverflowLeft" style="font-size: 30px; font-weight: 500;"> <%= playlistOneName %> </p>
                 </div>
                 <div class="col-sm-5" style="padding:0;">
-                    <p class="lead" style="font-size: 30px; font-weight: 500 ;"> Playlist 2 </p>
+                    <p class="lead possibleOverflowRight" style="font-size: 30px; font-weight: 500 ;"> <%= playlistTwoName %> </p>
                 </div>
             </div>
 
@@ -51,15 +57,18 @@
             <div class="row justify-content-between" style="padding:0;">
                 <div class="col-sm-5" style="padding:0;">
                     <div class="input-group w-5 h-5 align-items-center justify-content-center">
-                        <span class="overflow topResults input-group-text form-control">
-                            <%= playlistOneData?.name %>
+                        <span class="overflow topResults input-group-text form-control"
+                            style="display:block;">
+                            <%= playlistOneOwnerName %>
                         </span>
                         <span class="topResults input-group-text form-control" style="display:block;">
-                            <%= playlistOneData?.followers.total %> Followers
-                        </span>
-                        <span class="topResults input-group-text form-control"
-                            style="display:block; text-align:right;">
-                            <%= playlistOneData?.owner.display_name %>
+                            <%= playlistOneFollowerCount %> 
+
+                            <% if (playlistOneFollowerCount > 1) { %>
+                                Followers
+                            <% } else { %>
+                                Follower
+                            <% } %>
                         </span>
                     </div>
                 </div>
@@ -75,15 +84,18 @@
 
                 <div class="col-sm-5" style="padding:0;">
                     <div class="input-group w-5 h-5 align-items-center justify-content-center">
-                        <span class="topResults input-group-text form-control">
-                            <%= playlistTwoData?.owner.display_name %>
-                        </span>
                         <span class="topResults input-group-text form-control" style="display:block;">
-                            <%= playlistTwoData?.followers.total %> Followers
+                            <%= playlistTwoFollowerCount %> 
+
+                            <% if (playlistTwoFollowerCount > 1) { %>
+                                Followers
+                            <% } else { %>
+                                Follower
+                            <% } %>
                         </span>
                         <span class="topResults input-group-text form-control"
-                            style="display:block; text-align:right;">
-                            <%= playlistTwoData?.name %>
+                            style="display:block;">
+                            <%= playlistTwoOwnerName %>
                         </span>
                     </div>
                 </div>

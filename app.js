@@ -9,6 +9,7 @@ require('dotenv').config();
 
 const authenticateRoute = require('./routes/authenticate');
 const playlistMatchRoute = require('./routes/playlistMatch')
+const userMatchRoute = require('./routes/userMatch')
 const { access } = require('fs');
 
 const app = express();
@@ -46,6 +47,7 @@ app.get('/', (req, res) => {
 
 app.use('/auth', authenticateRoute);
 app.use('/playlists', playlistMatchRoute);
+app.use('/users', userMatchRoute);
 
 app.get('/logout', (req, res) => {
     res.locals.currentUser = null;

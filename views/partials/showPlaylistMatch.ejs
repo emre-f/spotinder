@@ -4,8 +4,10 @@
         <div class="centeredDiv" style="display:table-cell; vertical-align:middle;"> 
             <p class="artistName lead"> Songs </p>
             <p class="countValue lead" style="font-size:1.1rem;"> <%= matchingSongs.length %> matching </p>
-            <p class="countValue lead" style="font-size:1.1rem;"> out of <%= playlistOneSongCount %> | <%= playlistTwoSongCount %> </p>
-            <p class="countValue lead" style="font-size:1rem; font-style: italic;"> Showing 10 random songs... </p>
+            <% if (matchingSongs.length > 0) { %>
+                <p class="countValue lead" style="font-size:1.1rem;"> out of <%= playlistOneSongCount %> | <%= playlistTwoSongCount %> </p>
+                <p class="countValue lead" style="font-size:1rem; font-style: italic;"> Showing 10 random songs... </p>
+            <% } %>
         </div>
     </div>
 
@@ -42,8 +44,10 @@
         <div class="centeredDiv" style="display:table-cell; vertical-align:middle;"> 
             <p class="artistName lead"> Artists </p>
             <p class="countValue lead" style="font-size:1.1rem;"> <%= matchingArtists.length %> matching </p>
-            <p class="countValue lead" style="font-size:1.1rem;"> out of <%= playlistOneArtistCount.length %> | <%= playlistTwoArtistCount.length %> </p>
-            <p class="countValue lead" style="font-size:1rem; font-style: italic;"> Sorted by their combined rankings... </p>
+            <% if (matchingArtists.length > 0) { %>
+                <p class="countValue lead" style="font-size:1.1rem;"> out of <%= playlistOneArtistCount.length %> | <%= playlistTwoArtistCount.length %> </p>
+                <p class="countValue lead" style="font-size:1rem; font-style: italic;"> Sorted by their combined rankings... </p>
+            <% } %>
         </div>
     </div>
 
@@ -78,8 +82,10 @@
         <div class="centeredDiv" style="display:table-cell; vertical-align:middle;"> 
             <p class="artistName lead"> Genres </p>
             <p class="countValue lead" style="font-size:1.1rem;"> <%= matchingGenres.length %> matching </p>
-            <p class="countValue lead" style="font-size:1.1rem;"> out of <%= playlistOneGenres.length %> | <%= playlistTwoGenres.length %> </p>
-            <p class="countValue lead" style="font-size:1rem; font-style: italic;"> Sorted by their combined rankings... </p>
+            <% if (matchingGenres.length > 0) { %>
+                <p class="countValue lead" style="font-size:1.1rem;"> out of <%= playlistOneGenres.length %> | <%= playlistTwoGenres.length %> </p>
+                <p class="countValue lead" style="font-size:1rem; font-style: italic;"> Sorted by their combined rankings... </p>
+            <% } %>
         </div>
     </div>
 

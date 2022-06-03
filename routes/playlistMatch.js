@@ -16,8 +16,25 @@ router.route('/')
 
 router.route('/validate')
     .get(async (req, res) => {
-        let playlistOneId = req.query.playlistOneId; // '5AjvX2GUVVcb7fGhny9HML' // Rap and the beat
-        let playlistTwoId = req.query.playlistTwoId; // '6iU4NJJg0CwAVnnF3LgMjX' // Still M.R.E.
+        let playlistOneLink = req.query.playlistOneId; 
+        let playlistTwoLink = req.query.playlistTwoId; 
+
+        // Change the ids so that the ID is subtracted from the whole entry
+        // There might not be a ? depending on how you get the link... so adjusting for it 
+
+        var playlistOneId = playlistOneLink.substring(
+            playlistOneLink.indexOf("/playlist/") + 10, 
+            (playlistOneLink.indexOf("?") === -1) ? playlistOneLink.length :  playlistOneLink.indexOf("?")
+        );
+
+        var playlistTwoId = playlistTwoLink.substring(
+            playlistTwoLink.indexOf("/playlist/") + 10, 
+            (playlistTwoLink.indexOf("?") === -1) ? playlistTwoLink.length :  playlistTwoLink.indexOf("?")
+        );
+
+        console.log("Playlist One ID: " + playlistOneId) // '5AjvX2GUVVcb7fGhny9HML' // Rap and the beat
+        console.log("Playlist Two ID: " + playlistTwoId) // '6iU4NJJg0CwAVnnF3LgMjX' // Still M.R.E.
+   
         let accessToken = req.query.accessToken;
 
         // Validate playlist one
@@ -102,7 +119,13 @@ router.route('/validate')
             playlistOneRecentTracks, playlistTwoRecentTracks,
             matchingSongs: resultMatchingInfo.matchingSongs,
             matchingArtists: resultMatchingInfo.matchingArtists,
-            matchingGenres: resultMatchingInfo.matchingGenres
+            matchingGenres: resultMatchingInfo.matchingGenres,
+
+            playlistOneName: playlistOneData.name, playlistTwoName: playlistTwoData.name,
+            playlistOneOwnerName: playlistOneData.owner.display_name, playlistTwoOwnerName: playlistTwoData.owner.display_name, 
+            playlistOneFollowerCount: playlistOneData.followers.total, playlistTwoFollowerCount: playlistTwoData.followers.total,
+
+            returnPoint: "/playlists"
         })
     })
 
@@ -290,7 +313,7 @@ async function getSummaryInformation (accessToken, playlistData) {
     recentTracks.sort(function(a,b){
         // Turn your strings into dates, and then subtract them
         // to get a value that is either negative, positive, or zero.
-        return new Date(a.date) - new Date(b.date);
+        return new Date(a[0]) - new Date(b[0]);
     });
 
     let tmp = []

@@ -40,31 +40,39 @@
                     </button>
                 </div>
             <% } %>
-
+            
             <form action="/playlists/validate" method="GET">
                 <input type="hidden" name="accessToken" id="accessToken" value="<%= accessToken %>">
-                <div class="w-50 container" style="padding:0;">
-                    <p class="lead" style="display: flex; font-size: 25px; font-weight: 500 ;"> Link to Playlist 1 </p>
-
-                    <div class="input-group mb-3 container input-container" style="padding: 0;">
-                        <span class="input-group-text">open.spotify.com/playlist/</span>
-                        <input type="text" name="playlistOneId" id="playlistOneId" class="form-control" 
-                               placeholder="Playlist ID" aria-label="Playlist ID" aria-describedby="button-addon2" required>
-                    </div>
+                <div class="input-group mb-3 container input-container" style="width: 35%; padding: 0;">
+                    <span class="input-group-text">Link to Playlist 1</span>
+                    <input type="text" name="playlistOneId" id="playlistOneId" class="form-control" 
+                           placeholder="Playlist Link" aria-label="Playlist Link" aria-describedby="button-addon2" required>
                 </div>
-                <br><br>
-                <div class="w-50 container" style="padding:0;">
-                    <p class="lead" style="display: flex; font-size: 25px; font-weight: 500;"> Link to Playlist 2 </p>
-
-                    <div class="input-group mb-3 container input-container" style="padding: 0;">
-                        <span class="input-group-text">open.spotify.com/playlist/</span>
-                        <input type="text" name="playlistTwoId" id="playlistTwoId" class="form-control" 
-                               placeholder="Playlist ID" aria-label="Playlist ID" aria-describedby="button-addon2" required>
-                    </div>
+                <br>    
+                <div class="input-group mb-3 container input-container" style="width: 35%; padding: 0;">
+                    <span class="input-group-text">Link to Playlist 2</span>
+                    <input type="text" name="playlistTwoId" id="playlistTwoId" class="form-control" 
+                           placeholder="Playlist Link" aria-label="Playlist Link" aria-describedby="button-addon2" required>
                 </div>
             
                 <br>
-                <button class="comparePlaylistButton btn btn-lg btn-secondary font-weight-bold <% if(!accessTokenPresent) { %> disabled <% } %>">
+
+                <div class="container" style="width: 35%; padding: 0;">
+                    <p class="lead artistName">How to obtain a Playlist link?</p>
+                    <p class="lead countValue" style="font-weight:300;">
+                        While viewing a playlist press the 
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16" stroke="white" stroke-width="1">
+                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                        </svg>
+                        to open the dropdown menu. 
+                    </p>
+                    <p class="lead countValue" style="font-weight:300;">Hover over <span style="font-weight:500;">Share</span> and press 
+                        <span style="font-weight:500;">Copy link to playlist</span>, then paste it here
+                    </p>
+                </div>
+
+                <button class="comparePlaylistButton btn btn-lg btn-secondary font-weight-bold <% if(!accessTokenPresent) { %> disabled <% } %>"
+                        style="margin-top:20px;">
                     Match
                 </button>
             </form>

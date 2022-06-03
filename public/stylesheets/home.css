@@ -134,9 +134,9 @@ body {
 }
 
 .topResults {
-    /* overflow: hidden;
+    overflow: hidden;
     text-overflow: ellipsis; 
-    white-space: nowrap;  */
+    white-space: nowrap; 
     color: white!important;
     font-size:25px;
     font-weight: 400;
