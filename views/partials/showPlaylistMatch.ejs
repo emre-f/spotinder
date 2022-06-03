@@ -1,0 +1,105 @@
+<!-- MATCHING SONGS --> <br>
+<div class="row justify-content-between" style="padding:0;">
+    <div class="col-sm-2" style="padding:0; display: table;"> 
+        <div class="centeredDiv" style="display:table-cell; vertical-align:middle;"> 
+            <p class="artistName lead"> Songs </p>
+            <p class="countValue lead" style="font-size:1.1rem;"> <%= matchingSongs.length %> matching </p>
+            <p class="countValue lead" style="font-size:1.1rem;"> out of <%= playlistOneSongCount %> | <%= playlistTwoSongCount %> </p>
+            <p class="countValue lead" style="font-size:1rem; font-style: italic;"> Showing 10 random songs... </p>
+        </div>
+    </div>
+
+    <div class="col-sm-10" style="padding:0;">
+        <div class="row">
+            <% for (let i = 0; i < Math.min(10, matchingSongs.length) ; i++) { %>
+                <div class="col" style="max-width:155px">
+
+                    <img class="img" src="<%= matchingSongs[i].track.album.images[1]?.url %>"
+                        style="margin-top: 1rem; width:120px; height: 120px; border: 1px solid rgba(255, 255, 255, 0.5);"
+                        alt="artistImage" />
+
+                    <p class="possibleOverflowRight" style="margin-bottom: 0;"> 
+                        <span class="artistName lead"> <%= matchingSongs[i].track.name %> </span> 
+                    </p>
+          
+                    <p class="possibleOverflowRight" style="clear:both; margin-bottom: 0;"> 
+                        <span class="countValue lead" style="font-size:1.1rem;"> 
+                            <%= matchingSongs[i].track.artists[0].name %> 
+                        </span> 
+                    </p>
+                    
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<hr class="rounded">
+
+<!-- ARTISTS --> <br>
+<div class="row justify-content-between" style="padding:0;">
+    <div class="col-sm-2" style="padding:0; display: table;">
+        <div class="centeredDiv" style="display:table-cell; vertical-align:middle;"> 
+            <p class="artistName lead"> Artists </p>
+            <p class="countValue lead" style="font-size:1.1rem;"> <%= matchingArtists.length %> matching </p>
+            <p class="countValue lead" style="font-size:1.1rem;"> out of <%= playlistOneArtistCount.length %> | <%= playlistTwoArtistCount.length %> </p>
+            <p class="countValue lead" style="font-size:1rem; font-style: italic;"> Sorted by their combined rankings... </p>
+        </div>
+    </div>
+
+    <div class="col-sm-10" style="padding:0;">
+        <div class="row">
+            <% for (let i = 0; i < Math.min(10, matchingArtists.length) ; i++)  { %>
+                <div class="col" style="max-width:155px">
+                    <img class="img" src="<%= matchingArtists[i].artist.images[2].url %>"
+                        style="margin-top: 1rem; width:120px; height: 120px; border: 1px solid rgba(255, 255, 255, 0.5);"
+                        alt="artistImage" />
+
+                    <p class="possibleOverflowRight" style="margin-bottom: 0;"> 
+                        <span class="artistName lead"> <%= matchingArtists[i].artist.name %> </span> 
+                    </p>
+          
+                    <p class="possibleOverflowRight" style="clear:both; margin-bottom: 0;"> 
+                        <span class="countValue lead"> 
+                            #<%= matchingArtists[i].playlistOneRank %> | #<%= matchingArtists[i].playlistTwoRank %>
+                        </span> 
+                    </p>
+                </div>
+                <% } %>
+        </div>
+    </div>
+</div>
+
+<hr class="rounded">
+
+<!-- GENRES --> <br>
+<div class="row justify-content-between" style="padding:0;">
+    <div class="col-sm-2" style="padding:0; display: table;">
+        <div class="centeredDiv" style="display:table-cell; vertical-align:middle;"> 
+            <p class="artistName lead"> Genres </p>
+            <p class="countValue lead" style="font-size:1.1rem;"> <%= matchingGenres.length %> matching </p>
+            <p class="countValue lead" style="font-size:1.1rem;"> out of <%= playlistOneGenres.length %> | <%= playlistTwoGenres.length %> </p>
+            <p class="countValue lead" style="font-size:1rem; font-style: italic;"> Sorted by their combined rankings... </p>
+        </div>
+    </div>
+
+    <div class="col-sm-10" style="padding:0; display: table;">
+        <div style="display:table-cell; vertical-align:middle;">
+            <div class="row">
+                <% for (let i = 0; i < Math.min(10, matchingGenres.length) ; i++) { %>
+                    <div class="col" style="max-width:155px;">
+                        <p class="possibleOverflowRight" style="margin-bottom: 0;"> 
+                            <span class="artistName lead"> <%= matchingGenres[i].genre %> </span> 
+                        </p>
+              
+                        <p class="possibleOverflowRight" style="clear:both; margin-bottom: 0;"> 
+                            <span class="countValue lead"> 
+                                #<%= matchingGenres[i].playlistOneRank %> | #<%= matchingGenres[i].playlistTwoRank %>
+                            </span> 
+                        </p>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>

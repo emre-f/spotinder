@@ -14,7 +14,6 @@
 <body class="d-flex text-center text-white">
 
     <canvas id="backgroundCanvas"></canvas>
-
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
 
         <header class="" style="margin-bottom:20px">
@@ -52,7 +51,7 @@
             <div class="row justify-content-between" style="padding:0;">
                 <div class="col-sm-5" style="padding:0;">
                     <div class="input-group w-5 h-5 align-items-center justify-content-center">
-                        <span class="topResults input-group-text form-control">
+                        <span class="overflow topResults input-group-text form-control">
                             <%= playlistOneData?.name %>
                         </span>
                         <span class="topResults input-group-text form-control" style="display:block;">
@@ -62,6 +61,15 @@
                             style="display:block; text-align:right;">
                             <%= playlistOneData?.owner.display_name %>
                         </span>
+                    </div>
+                </div>
+
+                <div class="col-sm-2" style="padding:0; display: table;"> 
+                    <div class="centeredDiv" style="display:table-cell; vertical-align:middle;"> 
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <button class="swapButton btn selected" id="showSummaryButton">Summary</button>
+                            <button class="swapButton btn" id="showMatchButton">Match</button>
+                        </div>
                     </div>
                 </div>
 
@@ -81,152 +89,14 @@
                 </div>
             </div>
 
-
-
-            <!-- RECENT SONGS --> <br><br>
-            <div class="row justify-content-between" style="padding:0;">
-                <div class="col-sm-5" style="padding:0;">
-                    <div class="row">
-                        <% for (let i=Math.min(4, playlistOneRecentTracks.length - 1); i>= 0 ; i--) { %>
-                            <div class="col" style="max-width:160px">
-                                <p class="artistName lead">
-                                    <%= playlistOneRecentTracks[i][1].name %>
-                                </p>
-                                <p class="countValue lead" style="font-size:1.1rem;">
-                                    <%= playlistOneRecentTracks[i][1].artists[0].name %>
-                                </p>
-
-                                <img src="<%= playlistOneRecentTracks[i][1].album.images[1].url %>"
-                                    style="margin-top: 1rem; width:120px; height: 120px; border: 1px solid rgba(255, 255, 255, 0.5);"
-                                    alt="artistImage" />
-                            </div>
-                        <% } %>
-                    </div>
-                </div>
-                <div class="col-sm-2" style="padding:0; display: table;"> 
-                    <div class="centeredDiv" style="display:table-cell; vertical-align:middle;"> 
-                        <p class="artistName lead"> Songs </p>
-                        <p class="artistName lead" style="font-size:1.1rem;"> Total </p>
-                        <p class="countValue lead" style="font-size:1.1rem;"> <%= playlistOneSongCount %> | <%= playlistTwoSongCount %> </p>
-                        <p class="countValue lead" style="font-size:1rem; font-style: italic;"> Showing most recent songs... </p>
-                    </div>
-                </div>
-
-                <div class="col-sm-5" style="padding:0;">
-                    <div class="row">
-                        <% for (let i=0; i < Math.min(5, playlistTwoRecentTracks.length); i++) { %>
-                            <div class="col" style="max-width:160px;">
-                                <p class="artistName lead">
-                                    <%= playlistTwoRecentTracks[i][1].name %>
-                                </p>
-                                <p class="countValue lead" style="font-size:1.1rem;">
-                                    <%= playlistTwoRecentTracks[i][1].artists[0].name %>
-                                </p>
-
-                                <img src="<%= playlistTwoRecentTracks[i][1].album.images[1].url %>"
-                                    style="margin-top: 1rem; width:120px; height: 120px; border: 1px solid rgba(255, 255, 255, 0.5);"
-                                    alt="artistImage" />
-                            </div>
-                        <% } %>
-                    </div>
-                </div>
+            <div class="totalPlaylistSummary">
+                <%- include('partials/showPlaylistSummary.ejs') %>
             </div>
 
-
-
-            <!-- ARTISTS --> <br><br>
-            <div class="row justify-content-between" style="padding:0;">
-                <div class="col-sm-5" style="padding:0;">
-                    <div class="row">
-                        <% for (let i=Math.min(4, playlistOneArtistCount.length - 1); i>= 0 ; i--) { %>
-                            <div class="col" style="max-width:160px">
-                                <p class="artistName lead">
-                                    <%= playlistOneArtistCount[i][0].name %>
-                                </p>
-                                <p class="countValue lead">
-                                    <%= playlistOneArtistCount[i][1] %>
-                                </p>
-
-                                <img src="<%= playlistOneArtistCount[i][0].images[2].url %>"
-                                    style="margin-top: 1rem; width:120px; height: 120px; border: 1px solid rgba(255, 255, 255, 0.5);"
-                                    alt="artistImage" />
-                            </div>
-                            <% } %>
-                    </div>
-                </div>
-                <div class="col-sm-2" style="padding:0; display: table;">
-                    <div class="centeredDiv" style="display:table-cell; vertical-align:middle;"> 
-                        <p class="artistName lead"> Artists </p>
-                        <p class="artistName lead" style="font-size:1.1rem;"> Unique Artists </p>
-                        <p class="countValue lead" style="font-size:1.1rem;"> <%= playlistOneArtistCount.length %> | <%= playlistTwoArtistCount.length %> </p>
-                        <p class="countValue lead" style="font-size:1rem; font-style: italic;"> Showing top five artists... </p>
-                    </div>
-                </div>
-                <div class="col-sm-5" style="padding:0;">
-                    <div class="row">
-                        <% for (let i=0; i < Math.min(5, playlistTwoArtistCount.length); i++) { %>
-                            <div class="col" style="max-width:160px">
-                                <p class="artistName lead">
-                                    <%= playlistTwoArtistCount[i][0].name %>
-                                </p>
-                                <p class="countValue lead">
-                                    <%= playlistTwoArtistCount[i][1] %>
-                                </p>
-
-                                <img src="<%= playlistTwoArtistCount[i][0].images[2].url %>"
-                                    style="margin-top: 1rem; width:120px; height: 120px; border: 1px solid rgba(255, 255, 255, 0.5);"
-                                    alt="artistImage" />
-                            </div>
-                            <% } %>
-                    </div>
-                </div>
+            <div class="totalPlaylistMatch">
+                <%- include('partials/showPlaylistMatch.ejs') %>
             </div>
-
-
-
-            <!-- GENRES --> <br><br>
-            <div class="row justify-content-between" style="padding:0;">
-                <div class="col-sm-5" style="padding:0; display: table;">
-                    <div style="display:table-cell; vertical-align:middle;">
-                        <div class="row">
-                            <% for (let i=Math.min(4, playlistOneGenres.length); i>= 0 ; i--) { %>
-                                <div class="col" style="max-width:160px;">
-                                    <p class="artistName lead">
-                                        <%= playlistOneGenres[i][0] %>
-                                    </p>
-                                    <p class="countValue lead">
-                                        <%= playlistOneGenres[i][1] %>
-                                    </p>
-                                </div>
-                            <% } %>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-2" style="padding:0; display: table;">
-                    <div class="centeredDiv" style="display:table-cell; vertical-align:middle;"> 
-                        <p class="artistName lead"> Genres </p>
-                        <p class="artistName lead" style="font-size:1.1rem;"> Unique Genres </p>
-                        <p class="countValue lead" style="font-size:1.1rem;"> <%= playlistOneGenreCount %> | <%= playlistTwoGenreCount %> </p>
-                        <p class="countValue lead" style="font-size:1rem; font-style: italic;"> Showing top five genres... </p>
-                    </div>
-                </div>
-                <div class="col-sm-5" style="padding:0; display: table;">
-                    <div style="display:table-cell; vertical-align:middle;">
-                        <div class="row">
-                            <% for (let i=0; i < Math.min(5, playlistTwoGenres.length); i++) { %>
-                                <div class="col" style="max-width:160px;">
-                                    <p class="artistName lead">
-                                        <%= playlistTwoGenres[i][0] %>
-                                    </p>
-                                    <p class="countValue lead">
-                                        <%= playlistTwoGenres[i][1] %>
-                                    </p>
-                                </div>
-                            <% } %>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
 
         </main>
 
@@ -239,23 +109,109 @@
 
     <!-- JavaScript / JQuery -->
     <script>
-        const dotColor = '#FFB954';
+        const dotColor = '#1DB954';
         let bothPlaylistsValid = false; // disable the button compare playlists if not, use jquery
         let accessToken = document.getElementById('hiddenAccessToken')?.value;
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <!-- <script>
-        $(function () {
-            console.log(accessToken)
-           $('.comparePlaylistButton').attr('disabled', 'disabled') 
-
-           $(document).ready(function() {
-                $(".playlistValidateButton").click(function(){
-                    alert("hi")
-                }); 
-            });
+    <script>
+        $(".possibleOverflowLeft").each(function(){
+            e = $(this);
+            e.addClass('overflow');
         });
-    </script> -->
+
+        $(".possibleOverflowRight").each(function(){
+            e = $(this);
+            e.addClass('rightOverflow');
+        });
+
+        checkOverflowElements();
+
+        $('.totalPlaylistSummary').attr("hidden", false);
+        $('.totalPlaylistMatch').attr("hidden", true);
+
+        jQuery(':button').click(function () {
+            if (this.id == 'showSummaryButton') {
+                // Give them all overflow first (all will be removed since they aren't seen, then remove from extra ones)
+                // $(".possibleOverflowLeft").each(function(){
+                //     e = $(this);
+                //     e.addClass('overflow');
+                // });
+
+                // $(".possibleOverflowRight").each(function(){
+                //     e = $(this);
+                //     e.addClass('rightOverflow');
+                // });
+                
+                // // Now check to remove them
+                // setTimeout(function (){ checkOverflowElements(); }, 100);
+                // setTimeout(function (){ checkOverflowElements(); }, 1000);
+
+                jQuery('#showSummaryButton').addClass('selected');
+                $('.totalPlaylistSummary').attr("hidden", false);
+
+                jQuery('#showMatchButton').removeClass('selected');
+                $('.totalPlaylistMatch').attr("hidden", true);
+            }
+            else if (this.id == 'showMatchButton') {
+
+                // Give them all overflow first (all will be removed since they aren't seen, then remove from extra ones)
+                // $(".possibleOverflowLeft").each(function(){
+                //     e = $(this);
+                //     e.addClass('overflow');
+                // });
+
+                // $(".possibleOverflowRight").each(function(){
+                //     e = $(this);
+                //     e.addClass('rightOverflow');
+                // });
+                
+                // // Now check to remove them
+                // setTimeout(function (){ checkOverflowElements(); }, 100);
+                // setTimeout(function (){ checkOverflowElements(); }, 1000);
+
+                jQuery('#showMatchButton').addClass('selected');
+                $('.totalPlaylistMatch').attr("hidden", false);
+
+                jQuery('#showSummaryButton').removeClass('selected');
+                $('.totalPlaylistSummary').attr("hidden", true);
+            }
+        });
+
+        function checkOverflowElements() {
+            var toBeRemoved = []
+            // DETECT ELLIPSIS AND GIVE CLASS
+
+            // FOR LEFT
+            $(".overflow").each(function(){
+                // Test if the div element is empty
+                e = $(this);
+                if(!isEllipsisActive(e)) {
+                    toBeRemoved.push(e);// Elipsis not active
+                }
+            });
+
+            // FOR RIGHT
+            $(".rightOverflow").each(function(){
+                // Test if the div element is empty
+                e = $(this);
+                if(!isEllipsisActive(e)) {
+                    toBeRemoved.push(e);// Elipsis not active
+                }
+            });
+            console.log("Length: ", toBeRemoved.length)
+            for (let i = 0; i < toBeRemoved.length; i++) {
+                e = toBeRemoved[i];
+                e.removeClass('overflow');
+                e.removeClass('rightOverflow');
+            }
+        }
+
+        function isEllipsisActive($jQueryObject) {
+            // Rounding because sometimes values come out to be 96.025 etc where it should be 96
+            return (Math.round($jQueryObject.width()) < Math.round($jQueryObject[0].scrollWidth));
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
         crossorigin="anonymous"></script>

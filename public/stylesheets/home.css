@@ -1,3 +1,9 @@
+:root {
+    --button-backgr-color: rgba(29, 185, 84, 0.2); /* yellow theme: rgba(255, 185, 84, 0.2) */
+    --button-border-color: rgba(255, 255, 255, 0.5);
+    --white: #ffffff;
+  }
+
 body {
     height: 100vh;
     /* background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), */
@@ -33,8 +39,8 @@ body {
 .homeButton {
     font-size: 25px;
     color: white!important;
-    background-color:rgba(29, 185, 84, 0.2) !important;
-    border-color: rgba(255, 255, 255, 0.5) !important;
+    background-color: var(--button-backgr-color) !important;
+    border-color: var(--button-border-color) !important;
 }
 
 #backgroundCanvas {
@@ -56,8 +62,8 @@ body {
     color: #fff!important; /* font color */
     /* background-color:  #FFB954!important; */
     /* background-opacity: 0.5; */
-    background-color:rgba(255, 185, 84, 0.2) !important;
-    border-color: rgba(255, 255, 255, 0.5) !important;
+    background-color: var(--button-backgr-color) !important;
+    border-color: var(--button-border-color) !important;
     font-size: 25px;
 }
 
@@ -67,7 +73,7 @@ body {
 
 .btn-outline-secondary {
     color: white!important;
-    border-color: rgba(255, 255, 255, 0.5) !important;
+    border-color: var(--button-border-color) !important;
     font-size: 25px;
 }
 
@@ -75,20 +81,20 @@ body {
     font-size: 25px;
     color: white!important;
     background-color:rgba(255, 185, 84, 0.0) !important;
-    border-color: rgba(255, 255, 255, 0.5) !important;
+    border-color: var(--button-border-color) !important;
 }
 
 .comparePlaylistButton {
-    background-color:rgba(255, 185, 84, 0.5) !important;
-    border-color: rgba(255, 255, 255, 0.5) !important;
+    background-color: var(--button-backgr-color) !important;
+    border-color: var(--button-border-color) !important;
     font-weight: 500;
     margin:5px; 
     font-size: 25px;
 }
 
 .alert {
-    background-color:rgba(255, 185, 84, 0.5) !important;
-    border-color: rgba(255, 255, 255, 0.5) !important;
+    background-color: var(--button-backgr-color) !important;
+    border-color: var(--button-border-color) !important;
     font-weight: 500;
     font-size: 20px;
 }
@@ -111,9 +117,9 @@ body {
 .artistName {
     font-weight: 500; 
     text-align:center;
-    overflow: hidden;
+    /* overflow: hidden;
     text-overflow: ellipsis; 
-    white-space: nowrap; 
+    white-space: nowrap;  */
     margin: 0;
 }
 
@@ -122,13 +128,62 @@ body {
     text-align:center; 
     margin: 0;
 
-    overflow: hidden;
+    /* overflow: hidden;
     text-overflow: ellipsis; 
-    white-space: nowrap; 
+    white-space: nowrap;  */
 }
 
 .topResults {
-    overflow: hidden;
+    /* overflow: hidden;
     text-overflow: ellipsis; 
-    white-space: nowrap; 
+    white-space: nowrap;  */
+    color: white!important;
+    font-size:25px;
+    font-weight: 400;
+}
+
+/* OVERFLOWING TEXT */
+.overflow, .rightOverflow {
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.overflow:hover, .rightOverflow:hover  {
+    overflow: visible;
+}
+
+.overflow:hover span {
+    position: relative; 
+    background-color: #191414;
+
+    box-shadow: 0 0 4px 0 var(--button-border-color);
+    border-radius: 1px;
+}
+
+.rightOverflow:hover span {
+    position: relative;
+    background-color: #191414;
+    float:right;
+    text-align:right;
+
+    box-shadow: 0 0 4px 0 var(--button-border-color);
+    border-radius: 1px;
+}
+
+.swapButton {
+    border-color: var(--button-border-color) !important;
+    color: white!important;
+    font-weight: 500;
+    font-size: 25px;
+}
+
+.swapButton.selected {
+    background-color: var(--button-backgr-color) !important;
+}
+
+.img {
+    margin-top:1.2rem;
+    margin-bottom: 0.3rem;
 }

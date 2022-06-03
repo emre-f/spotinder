@@ -3,6 +3,7 @@ const router = express.Router();
 const request = require('request');
 const axios = require('axios');
 const { Console } = require('console');
+const { match } = require('assert');
 
 router.route('/')
     .get((req, res) => {
@@ -74,16 +75,21 @@ router.route('/validate')
             res.render('playlistMatch', { accessToken, accessTokenPresent, error })
         }
 
-        resultPlaylistOne = await getTopGenres(accessToken, playlistOneData)
-        resultPlaylistTwo = await getTopGenres(accessToken, playlistTwoData)
+        // Used in other stages, it adds more to the .tracks array
+        let allPlaylistOneSongs = await getAllSongs(accessToken, playlistOneData);
+        let allPlaylistTwoSongs = await getAllSongs(accessToken, playlistTwoData);
 
-        console.log(playlistOneData)
+        resultPlaylistOne = await getSummaryInformation(accessToken, playlistOneData)
+        resultPlaylistTwo = await getSummaryInformation(accessToken, playlistTwoData)
 
         var [ playlistOneGenres, playlistTwoGenres ] = [ resultPlaylistOne.genresArray, resultPlaylistTwo.genresArray ]
         var [ playlistOneSongCount, playlistTwoSongCount ] = [ resultPlaylistOne.songCount, resultPlaylistTwo.songCount ]
         var [ playlistOneArtistCount, playlistTwoArtistCount ] = [ resultPlaylistOne.artistCount, resultPlaylistTwo.artistCount ]
         var [ playlistOneGenreCount, playlistTwoGenreCount ] = [ resultPlaylistOne.genreCount, resultPlaylistTwo.genreCount ]
         var [ playlistOneRecentTracks, playlistTwoRecentTracks ] = [ resultPlaylistOne.recentTracks, resultPlaylistTwo.recentTracks ]
+
+        // MATCHING INFO
+        resultMatchingInfo = await getMatchingInformation(allPlaylistOneSongs, allPlaylistTwoSongs, resultPlaylistOne, resultPlaylistTwo)
 
         res.render('playlistMatchResults', { 
             accessToken, 
@@ -93,16 +99,16 @@ router.route('/validate')
             playlistOneSongCount, playlistTwoSongCount,
             playlistOneArtistCount, playlistTwoArtistCount,
             playlistOneGenreCount, playlistTwoGenreCount,
-            playlistOneRecentTracks, playlistTwoRecentTracks
+            playlistOneRecentTracks, playlistTwoRecentTracks,
+            matchingSongs: resultMatchingInfo.matchingSongs,
+            matchingArtists: resultMatchingInfo.matchingArtists,
+            matchingGenres: resultMatchingInfo.matchingGenres
         })
     })
 
 module.exports = router;
 
-// From the top 100 songs, get artists (with counts, to send less requests). Then get genres for all artists, multiply with count and return result.
-async function getTopGenres (accessToken, playlistData) {
-    console.log("getTopGenres() called");
-
+async function getAllSongs (accessToken, playlistData) {
     // Get all the songs (if tracks.length >100)
     var tracks = playlistData.tracks.items
     var nextLink = playlistData.tracks.next; // if not undefined, more songs
@@ -134,6 +140,140 @@ async function getTopGenres (accessToken, playlistData) {
     }
 
     console.log("Total song count: ", tracks.length);
+    return tracks;
+}
+
+async function getMatchingInformation (playlistOneSongs, playlistTwoSongs, playlistOneInfo, playlistTwoInfo) {
+    // -- MATCHING SONGS
+
+    // Get array of song IDs for the first playlist
+    var playlistOneSongIds = [];
+    for (let i = 0; i < playlistOneSongs.length; i++) {
+        playlistOneSongIds.push(playlistOneSongs[i].track.id);
+    }
+
+    // Get songs with matching IDs from playlist two
+    var matchingSongs = []
+    for (let i = 0; i < playlistTwoSongs.length; i++) {
+        let song = playlistTwoSongs[i];
+        
+        if(playlistOneSongIds.includes(song.track.id) && song.track.id !== null) {
+            matchingSongs.push(song);
+        }
+    }
+
+    // Randomize the list
+    matchingSongs = shuffle(matchingSongs);
+
+    // -- MATCHING ARTISTS
+
+    // Give each artist a rank, based on how many times they appear
+    var playlistOneArtists = giveRank(playlistOneInfo.artistCount);
+    var playlistTwoArtists = giveRank(playlistTwoInfo.artistCount);
+
+    // Get playlist 1 artist IDs
+    var playlistOneArtistIds = [];
+    for (let i = 0; i < playlistOneArtists.length; i++) {
+        playlistOneArtistIds.push(playlistOneArtists[i][0].id);
+    }
+
+    var matchingArtists = []
+    // Get playlist 2 artists that match, and also add their ranks in playlist 1 and 2
+    for (let i = 0; i < playlistTwoArtists.length; i++) {
+        let foundIndex = playlistOneArtistIds.indexOf(playlistTwoArtists[i][0].id);
+        if(foundIndex !== -1) {
+            matchingArtists.push({
+                artist: playlistTwoArtists[i][0], 
+                playlistOneRank: playlistOneArtists[foundIndex][2] , 
+                playlistTwoRank: playlistTwoArtists[i][2]
+            })
+        }
+    }
+
+    // Sort based on total rank (smallest rank => higher up)
+    matchingArtists.sort(function(a, b) {
+        return (a.playlistOneRank + a.playlistTwoRank) - (b.playlistOneRank + b.playlistTwoRank);
+    });
+
+    // -- MATCHING GENRES
+
+    // Give each genre a rank, based on how many times they appear;
+    var playlistOneGenres = giveRank(playlistOneInfo.genresArray);
+    var playlistTwoGenres = giveRank(playlistTwoInfo.genresArray);
+
+    // Get playlist 1 genre names
+    var playlistOneGenreNames = [];
+    for (let i = 0; i < playlistOneGenres.length; i++) {
+        playlistOneGenreNames.push(playlistOneGenres[i][0]);
+    }
+
+    // Get playlist 2 genres that match, and also add their ranks in playlist 1 and 2
+    var matchingGenres = []
+
+    for (let i = 0; i < playlistTwoGenres.length; i++) {
+        let foundIndex = playlistOneGenreNames.indexOf(playlistTwoGenres[i][0]);
+
+        if(foundIndex !== -1) {
+            matchingGenres.push({
+                genre: playlistTwoGenres[i][0], 
+                playlistOneRank: playlistOneGenres[foundIndex][2] , 
+                playlistTwoRank: playlistTwoGenres[i][2]
+            })
+        }
+    }
+
+    // Sort based on total rank (smallest rank => higher up)
+    matchingGenres.sort(function(a, b) {
+        return (a.playlistOneRank + a.playlistTwoRank) - (b.playlistOneRank + b.playlistTwoRank);
+    });
+
+    return { matchingSongs, matchingArtists, matchingGenres }
+}
+
+function shuffle(array) {
+    let currentIndex = array.length,  randomIndex;
+
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+
+        // Pick a remaining element.
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        // And swap it with the current element.
+        [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+
+    return array;
+}
+
+function giveRank(artistCount) {
+    let playlistOneArtists = Array.from(artistCount);
+    var rank = 1;
+    var count = 0; // how many songs in that specific rank
+    for (let i = 0; i < playlistOneArtists.length; i++) {
+        if (i === 0) {
+            playlistOneArtists[i].push(rank);
+            continue;
+        }
+
+        if (playlistOneArtists[i - 1][1] === playlistOneArtists[i][1]) { // If artists have the same count... same rank
+            playlistOneArtists[i].push(rank);
+            count += 1;
+        } else {
+            rank += 1 + count;
+            playlistOneArtists[i].push(rank);
+            count = 0;
+        }
+    }
+
+    return playlistOneArtists
+}
+
+// From the top 100 songs, get artists (with counts, to send less requests). Then get genres for all artists, multiply with count and return result.
+async function getSummaryInformation (accessToken, playlistData) {
+    console.log("getSummaryInformation() called");
 
     // Get the most recent 5 songs
     let recentTracks = []
@@ -232,7 +372,8 @@ async function getTopGenres (accessToken, playlistData) {
     // Sort the genres and return the top ones
     let genresArray = []
     for (let i = 0; i < Object.keys(allGenres).length; i++) {
-        genresArray.push([Object.keys(allGenres)[i], allGenres[Object.keys(allGenres)[i]]])
+        let capitalized = Object.keys(allGenres)[i].replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase()); // capitalize first letters
+        genresArray.push([capitalized, allGenres[Object.keys(allGenres)[i]]])
     }
 
     genresArray.sort(function(a, b) {
@@ -246,7 +387,7 @@ async function getTopGenres (accessToken, playlistData) {
     
     return { 
         genresArray,
-        songCount: tracks.length,
+        songCount: playlistData.tracks.items.length,
         artistCount,
         genreCount: Object.keys(allGenres).length,
         recentTracks
