@@ -33,7 +33,7 @@
 
         <main class="px-3">
             <% if(error && error.length) {%>
-                <div class="w-50 container alert alert-dismissible fade show" role="alert">
+                <div class="container alert alert-dismissible fade show" style="width:35%" role="alert">
                     <%= error %>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -41,18 +41,33 @@
                 </div>
             <% } %>
             
-            <form action="/users/validate" method="GET">
+            <form class="searchForm" action="/users/validate" method="GET">
                 <input type="hidden" name="accessToken" id="accessToken" value="<%= accessToken %>">
                 <div class="input-group mb-3 container input-container" style="width: 35%; padding: 0;">
                     <span class="input-group-text">Link to User 1</span>
                     <input type="text" name="usernameOne" id="usernameOne" class="form-control" 
                            placeholder="User Link" aria-label="User Link" aria-describedby="button-addon2" required>
                 </div>
+
+                <div class="container form-check form-switch" style="width: 35%;">
+                    <input class="form-check-input" type="checkbox" id="userOneOnlyIncludeUser" name="userOneOnlyIncludeUser">
+                    <label class="lead form-check-label" for="flexSwitchCheckDefault" style="float:left;"> 
+                        Only include playlists created by the user
+                    </label>
+                </div>
+
                 <br>    
                 <div class="input-group mb-3 container input-container" style="width: 35%; padding: 0;">
                     <span class="input-group-text">Link to User 2</span>
                     <input type="text" name="usernameTwo" id="usernameTwo" class="form-control" 
                            placeholder="User Link" aria-label="User Link" aria-describedby="button-addon2" required>
+                </div>
+
+                <div class="container form-check form-switch" style="width: 35%;">
+                    <input class="form-check-input" type="checkbox" id="userTwoOnlyIncludeUser" name="userTwoOnlyIncludeUser">
+                    <label class="lead form-check-label" for="flexSwitchCheckDefault" style="float:left;"> 
+                        Only include playlists created by the user
+                    </label>
                 </div>
             
                 <br>
@@ -76,6 +91,10 @@
                     Match
                 </button>
             </form>
+
+            <div class="spinner" style="opacity: 0;">
+                <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+            </div>
         </main>
 
         <footer class="mt-auto text-white-50">
@@ -92,18 +111,11 @@
         let accessToken = document.getElementById('hiddenAccessToken')?.value;
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <!-- <script>
-        $(function () {
-            console.log(accessToken)
-           $('.comparePlaylistButton').attr('disabled', 'disabled') 
-
-           $(document).ready(function() {
-                $(".playlistValidateButton").click(function(){
-                    alert("hi")
-                }); 
-            });
+    <script>
+        $(".searchForm").submit(function(event) {
+            jQuery('.spinner').addClass("spinnerFadeIn");
         });
-    </script> -->
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
         crossorigin="anonymous"></script>

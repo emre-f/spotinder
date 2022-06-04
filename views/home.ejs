@@ -29,8 +29,11 @@
         </header>
         <main class="px-3">
             <h1>Spotinder</h1>
-            <p class="lead"> Welcome to Spotinder! <br> See how well two users or playlists match <br>
+            <p class="lead"> 
+                Welcome to Spotinder! <br> 
+                See how well two playlists or users match
             </p>
+
             <div style="text-align: center;">
                 <a href="/playlists" style="margin:5px" class="homeButton btn btn-lg btn-secondary font-weight-bold 
                         <% if(!accessTokenPresent) { %> disabled <% } %>">
@@ -41,9 +44,16 @@
                     Compare Users
                 </a>
             </div>
-            <div style="text-align: center;">
+            <p class="lead" style="margin-top:8px"> Compare Users will consider all public playlists </p>
+            <div style="text-align: center; margin-top:50px;">
                 <% if (!accessTokenPresent) { %>
-                    <p class="lead"> Please authenticate with Spotify first. </p>
+                    <p class="lead" style="font-weight:500; opacity: 1;"> 
+                        Please authenticate with Spotify first. 
+                    </p>
+                <% } else { %>
+                    <p class="lead" style="font-weight:500; opacity: 0;"> 
+                        Please authenticate with Spotify first. 
+                    </p>
                 <% } %>
             </div>
         </main>

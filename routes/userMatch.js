@@ -19,6 +19,9 @@ router.route('/validate')
         let userOneLink = req.query.usernameOne; 
         let userTwoLink = req.query.usernameTwo; 
 
+        var userOneOnlyIncludePersonalPlaylists = req.query.userOneOnlyIncludeUser === undefined ? false : req.query.userOneOnlyIncludeUser;
+        var userTwoOnlyIncludePersonalPlaylists = req.query.userTwoOnlyIncludeUser === undefined ? false : req.query.userTwoOnlyIncludeUser;
+
         // Change the ids so that the ID is subtracted from the whole entry
         // There might not be a ? depending on how you get the link... so adjusting for it 
 
@@ -93,8 +96,8 @@ router.route('/validate')
         }
 
         // Used in other stages, it adds more to the .tracks array
-        let allUserOneSongs = await getAllSongs(accessToken, userOneId);
-        let allUserTwoSongs = await getAllSongs(accessToken, userTwoId);
+        let allUserOneSongs = await getAllSongs(accessToken, userOneId, userOneOnlyIncludePersonalPlaylists);
+        let allUserTwoSongs = await getAllSongs(accessToken, userTwoId, userTwoOnlyIncludePersonalPlaylists);
 
         let userOneSummary = await getSummaryInformation(accessToken, allUserOneSongs)
         let userTwoSummary = await getSummaryInformation(accessToken, allUserTwoSongs)
@@ -132,7 +135,7 @@ router.route('/validate')
 
 module.exports = router;
 
-async function getAllSongs (accessToken, userId) {
+async function getAllSongs (accessToken, userId, onlyPersonal = false) {
     var allTracks = [];
 
     try {
@@ -172,11 +175,17 @@ async function getAllSongs (accessToken, userId) {
         } finally {
             if (!playlistFailed) { 
                 console.log(`Playlist with id ${playlistId} is valid, name: `, axiosResponse.data.name) 
+                // console.log("Created by ", axiosResponse.data.owner.id)
                 var playlistData = axiosResponse.data;
             }
         }
 
-        await delay(200);
+        if(onlyPersonal && playlistData.owner.id !== userId) { 
+            console.log("Playlist created by someone else, skipping")
+            continue; 
+        }
+
+        await delay(100);
 
         let playlistSongs = await getAllPlaylistSongs(accessToken, playlistData);
         allTracks.push.apply(allTracks, playlistSongs)
