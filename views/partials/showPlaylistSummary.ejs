@@ -119,18 +119,20 @@
     <div class="col-sm-5" style="padding:0; display: table;">
         <div style="display:table-cell; vertical-align:middle;">
             <div class="row">
-                <% for (let i=Math.min(4, playlistOneGenres.length); i>= 0 ; i--) { %>
-                    <div class="col" style="max-width:155px;">
-                        <p class="possibleOverflowLeft" style="margin-bottom: 0;"> 
-                            <span class="artistName lead"> <%= playlistOneGenres[i][0] %> </span> 
-                        </p>
-              
-                        <p class="possibleOverflowLeft" style="margin-bottom: 0;"> 
-                            <span class="countValue lead"> 
-                                <%= playlistOneGenres[i][1] %>
-                            </span> 
-                        </p>
-                    </div>
+                <% if (playlistOneGenres.length > 0) { %> 
+                    <% for (let i=Math.min(4, playlistOneGenres.length); i>= 0 ; i--) { %>
+                        <div class="col" style="max-width:155px;">
+                            <p class="possibleOverflowLeft" style="margin-bottom: 0;"> 
+                                <span class="artistName lead"> <%= playlistOneGenres[i][0] %> </span> 
+                            </p>
+                
+                            <p class="possibleOverflowLeft" style="margin-bottom: 0;"> 
+                                <span class="countValue lead"> 
+                                    <%= playlistOneGenres[i][1] %>
+                                </span> 
+                            </p>
+                        </div>
+                    <% } %>
                 <% } %>
             </div>
         </div>
@@ -146,18 +148,20 @@
     <div class="col-sm-5" style="padding:0; display: table;">
         <div style="display:table-cell; vertical-align:middle;">
             <div class="row">
-                <% for (let i=0; i < Math.min(5, playlistTwoGenres.length); i++) { %>
-                    <div class="col" style="max-width:155px;">
-                        <p class="possibleOverflowRight" style="margin-bottom: 0;"> 
-                            <span class="artistName lead"> <%= playlistTwoGenres[i][0] %> </span> 
-                        </p>
-              
-                        <p class="possibleOverflowRight" style="clear:both; margin-bottom: 0;"> 
-                            <span class="countValue lead"> 
-                                <%= playlistTwoGenres[i][1] %>
-                            </span> 
-                        </p>
-                    </div>
+                <% if (playlistTwoGenres.length > 0) { %> 
+                    <% for (let i=0; i < Math.min(5, playlistTwoGenres.length); i++) { %>
+                        <div class="col" style="max-width:155px;">
+                            <p class="possibleOverflowRight" style="margin-bottom: 0;"> 
+                                <span class="artistName lead"> <%= playlistTwoGenres[i][0] %> </span> 
+                            </p>
+                
+                            <p class="possibleOverflowRight" style="clear:both; margin-bottom: 0;"> 
+                                <span class="countValue lead"> 
+                                    <%= playlistTwoGenres[i][1] %>
+                                </span> 
+                            </p>
+                        </div>
+                    <% } %>
                 <% } %>
             </div>
         </div>

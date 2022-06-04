@@ -43,16 +43,33 @@
             
             <form class="searchForm" action="/playlists/validate" method="GET">
                 <input type="hidden" name="accessToken" id="accessToken" value="<%= accessToken %>">
+
                 <div class="input-group mb-3 container input-container" style="width: 35%; padding: 0;">
                     <span class="input-group-text">Link to Playlist 1</span>
                     <input type="text" name="playlistOneId" id="playlistOneId" class="form-control" 
                            placeholder="Playlist Link" aria-label="Playlist Link" aria-describedby="button-addon2" required>
                 </div>
-                <br>    
+
+                <div class="container form-check form-switch" style="width: 35%;">
+                    <input class="form-check-input" type="checkbox" id="playlistOneOnlyIncludeOwner" name="playlistOneOnlyIncludeOwner">
+                    <label class="lead form-check-label" for="flexSwitchCheckDefault" style="float:left;"> 
+                        Only include songs added by the playlist's creator
+                    </label>
+                </div>
+
+                <br>
+
                 <div class="input-group mb-3 container input-container" style="width: 35%; padding: 0;">
                     <span class="input-group-text">Link to Playlist 2</span>
                     <input type="text" name="playlistTwoId" id="playlistTwoId" class="form-control" 
                            placeholder="Playlist Link" aria-label="Playlist Link" aria-describedby="button-addon2" required>
+                </div>
+
+                <div class="container form-check form-switch" style="width: 35%;">
+                    <input class="form-check-input" type="checkbox" id="playlistTwoOnlyIncludeOwner" name="playlistTwoOnlyIncludeOwner">
+                    <label class="lead form-check-label" for="flexSwitchCheckDefault" style="float:left;"> 
+                        Only include songs created by the playlist's creator
+                    </label>
                 </div>
             
                 <br>

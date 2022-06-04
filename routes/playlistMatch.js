@@ -19,6 +19,9 @@ router.route('/validate')
         let playlistOneLink = req.query.playlistOneId; 
         let playlistTwoLink = req.query.playlistTwoId; 
 
+        var playlistOneOnlyIncludeOwnerSongs = req.query.playlistOneOnlyIncludeOwner === undefined ? false : req.query.playlistOneOnlyIncludeOwner;
+        var playlistTwoOnlyIncludeOwnerSongs = req.query.playlistTwoOnlyIncludeOwner === undefined ? false : req.query.playlistTwoOnlyIncludeOwner;
+
         // Change the ids so that the ID is subtracted from the whole entry
         // There might not be a ? depending on how you get the link... so adjusting for it 
 
@@ -93,11 +96,11 @@ router.route('/validate')
         }
 
         // Used in other stages, it adds more to the .tracks array
-        let allPlaylistOneSongs = await getAllSongs(accessToken, playlistOneData);
-        let allPlaylistTwoSongs = await getAllSongs(accessToken, playlistTwoData);
+        let allPlaylistOneSongs = await getAllSongs(accessToken, playlistOneData, playlistOneOnlyIncludeOwnerSongs);
+        let allPlaylistTwoSongs = await getAllSongs(accessToken, playlistTwoData, playlistTwoOnlyIncludeOwnerSongs);
 
-        resultPlaylistOne = await getSummaryInformation(accessToken, playlistOneData)
-        resultPlaylistTwo = await getSummaryInformation(accessToken, playlistTwoData)
+        resultPlaylistOne = await getSummaryInformation(accessToken, allPlaylistOneSongs)
+        resultPlaylistTwo = await getSummaryInformation(accessToken, allPlaylistTwoSongs)
 
         var [ playlistOneGenres, playlistTwoGenres ] = [ resultPlaylistOne.genresArray, resultPlaylistTwo.genresArray ]
         var [ playlistOneSongCount, playlistTwoSongCount ] = [ resultPlaylistOne.songCount, resultPlaylistTwo.songCount ]
@@ -131,13 +134,23 @@ router.route('/validate')
 
 module.exports = router;
 
-async function getAllSongs (accessToken, playlistData) {
+async function getAllSongs (accessToken, playlistData, onlyOwnerSongs) {
     // Get all the songs (if tracks.length >100)
-    var tracks = playlistData.tracks.items
+    var tracks = []
+
+    for (let i = 0; i < playlistData.tracks.items.length; i++) {
+        let track = playlistData.tracks.items[i];
+
+        if (onlyOwnerSongs && track.added_by.id !== playlistData.owner.id) {
+            continue;
+        }
+
+        tracks.push(track);
+    }
+
     var nextLink = playlistData.tracks.next; // if not undefined, more songs
 
     while(nextLink !== undefined && nextLink !== null) {
-        console.log("next link: ", nextLink)
         console.log("More songs, calling again...")
         // Get next 100 songs
         try {
@@ -153,7 +166,16 @@ async function getAllSongs (accessToken, playlistData) {
             var getNextSongsFailed = true;
         } finally {
             if (!getNextSongsFailed) { 
-                tracks.push.apply(tracks, axiosResponse.data.items)
+                for (let i = 0; i < axiosResponse.data.items.length; i++) {
+                    let track = axiosResponse.data.items[i];
+
+                    if (onlyOwnerSongs && track.added_by.id !== playlistData.owner.id) {
+                        continue;
+                    }
+            
+                    tracks.push(track);
+                }
+
                 nextLink = axiosResponse.data.next;
                 // console.log("next link 2: ", nextLink)
             } else {
@@ -295,13 +317,13 @@ function giveRank(artistCount) {
 }
 
 // From the top 100 songs, get artists (with counts, to send less requests). Then get genres for all artists, multiply with count and return result.
-async function getSummaryInformation (accessToken, playlistData) {
+async function getSummaryInformation (accessToken, playlistSongs) {
     console.log("getSummaryInformation() called");
 
     // Get the most recent 5 songs
     let recentTracks = []
-    for (let i = 0; i < playlistData.tracks.items.length; i++) {
-        let currTrack = playlistData.tracks.items[i];
+    for (let i = 0; i < playlistSongs.length; i++) {
+        let currTrack = playlistSongs[i];
         
         recentTracks.push([currTrack.added_at, currTrack.track])
         
@@ -328,9 +350,8 @@ async function getSummaryInformation (accessToken, playlistData) {
     let artistIds = {};
 
     // ARTISTS AND COUNTS
-    for (let i = 0; i < playlistData.tracks.items.length; i++) {
-        // console.log(playlistData.tracks.items[i].track.artists[0].name)
-        let artistId = playlistData.tracks.items[i].track.artists[0].id;
+    for (let i = 0; i < playlistSongs.length; i++) {
+        let artistId = playlistSongs[i].track.artists[0].id;
 
         artistIds[artistId] = (artistIds[artistId] || 0) + 1;
     }
@@ -410,7 +431,7 @@ async function getSummaryInformation (accessToken, playlistData) {
     
     return { 
         genresArray,
-        songCount: playlistData.tracks.items.length,
+        songCount: playlistSongs.length,
         artistCount,
         genreCount: Object.keys(allGenres).length,
         recentTracks

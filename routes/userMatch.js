@@ -22,6 +22,9 @@ router.route('/validate')
         var userOneOnlyIncludePersonalPlaylists = req.query.userOneOnlyIncludeUser === undefined ? false : req.query.userOneOnlyIncludeUser;
         var userTwoOnlyIncludePersonalPlaylists = req.query.userTwoOnlyIncludeUser === undefined ? false : req.query.userTwoOnlyIncludeUser;
 
+        var userOneOnlyIncludeTheirSongs = req.query.userOneOnlyIncludeUserSongs === undefined ? false : req.query.userOneOnlyIncludeUserSongs;
+        var userTwoOnlyIncludeTheirSongs = req.query.userTwoOnlyIncludeUserSongs === undefined ? false : req.query.userTwoOnlyIncludeUserSongs;
+
         // Change the ids so that the ID is subtracted from the whole entry
         // There might not be a ? depending on how you get the link... so adjusting for it 
 
@@ -96,8 +99,8 @@ router.route('/validate')
         }
 
         // Used in other stages, it adds more to the .tracks array
-        let allUserOneSongs = await getAllSongs(accessToken, userOneId, userOneOnlyIncludePersonalPlaylists);
-        let allUserTwoSongs = await getAllSongs(accessToken, userTwoId, userTwoOnlyIncludePersonalPlaylists);
+        let allUserOneSongs = await getAllSongs(accessToken, userOneId, userOneOnlyIncludePersonalPlaylists, userOneOnlyIncludeTheirSongs);
+        let allUserTwoSongs = await getAllSongs(accessToken, userTwoId, userTwoOnlyIncludePersonalPlaylists, userTwoOnlyIncludeTheirSongs);
 
         let userOneSummary = await getSummaryInformation(accessToken, allUserOneSongs)
         let userTwoSummary = await getSummaryInformation(accessToken, allUserTwoSongs)
@@ -135,7 +138,7 @@ router.route('/validate')
 
 module.exports = router;
 
-async function getAllSongs (accessToken, userId, onlyPersonal = false) {
+async function getAllSongs (accessToken, userId, onlyPersonal = false, onlyUserAddedSongs) {
     var allTracks = [];
 
     try {
@@ -187,7 +190,7 @@ async function getAllSongs (accessToken, userId, onlyPersonal = false) {
 
         await delay(100);
 
-        let playlistSongs = await getAllPlaylistSongs(accessToken, playlistData);
+        let playlistSongs = await getAllPlaylistSongs(accessToken, playlistData, userId , onlyUserAddedSongs);
         allTracks.push.apply(allTracks, playlistSongs)
     }
 
@@ -213,13 +216,23 @@ async function withoutDuplicateIds(objects) {
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
-async function getAllPlaylistSongs (accessToken, playlistData) {
+async function getAllPlaylistSongs (accessToken, playlistData, userId, onlyOwnerSongs) {
     // Get all the songs (if tracks.length >100)
-    var tracks = playlistData.tracks.items
+    var tracks = []
+
+    for (let i = 0; i < playlistData.tracks.items.length; i++) {
+        let track = playlistData.tracks.items[i];
+
+        if (onlyOwnerSongs && track.added_by.id !== userId) {
+            continue;
+        }
+
+        tracks.push(track);
+    }
+
     var nextLink = playlistData.tracks.next; // if not undefined, more songs
 
     while(nextLink !== undefined && nextLink !== null) {
-        console.log("next link: ", nextLink)
         console.log("More songs, calling again...")
         // Get next 100 songs
         try {
@@ -235,7 +248,17 @@ async function getAllPlaylistSongs (accessToken, playlistData) {
             var getNextSongsFailed = true;
         } finally {
             if (!getNextSongsFailed) { 
-                tracks.push.apply(tracks, axiosResponse.data.items)
+                
+                for (let i = 0; i < axiosResponse.data.items.length; i++) {
+                    let track = axiosResponse.data.items[i];
+    
+                    if (onlyOwnerSongs && track.added_by.id !== userId) {
+                        continue;
+                    }
+            
+                    tracks.push(track);
+                }
+
                 nextLink = axiosResponse.data.next;
                 // console.log("next link 2: ", nextLink)
             } else {
