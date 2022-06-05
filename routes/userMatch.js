@@ -76,7 +76,8 @@ router.route('/validate')
             var userTwoFailed = true;
         } finally {
             if (!userTwoFailed) { 
-                console.log("User 2 is valid, name: ", axiosResponse.display_name) 
+                console.log(axiosResponse.data)
+                console.log("User 2 is valid, name: ", axiosResponse.data.display_name) 
                 var userTwoData = axiosResponse.data;
             }
         }
@@ -461,6 +462,11 @@ async function getSummaryInformation (accessToken, allSongs) {
     var allArtists = []
 
     for (let i = 0; i < ids.length; i++) {
+        if(ids[i] === "") {  // Skip empty id
+            console.log("skipped empty ID") 
+            continue; 
+        } 
+
         try {
             axiosResponse = await axios.get(`https://api.spotify.com/v1/artists?ids=${ids[i]}`, { 
                 headers: {
