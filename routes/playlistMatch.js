@@ -49,7 +49,7 @@ router.route('/validate')
                 }});
         } catch (e) {
             console.log("Caught an error for playlist 1")
-            console.log(e);
+            var errorMsgPlaylistOne = getErrorMessage(e);
 
             var playlistOneFailed = true;
         } finally {
@@ -68,7 +68,7 @@ router.route('/validate')
                 }});
         } catch (e) {
             console.log("Caught an error for playlist 2")
-            console.log(e)
+            var errorMsgPlaylistTwo = getErrorMessage(e);
 
             var playlistTwoFailed = true;
         } finally {
@@ -85,14 +85,15 @@ router.route('/validate')
             // Define error
             let error = ""
             if (playlistOneFailed && playlistTwoFailed) {
-                error = "Both IDs entered were incorrect."
+                error = "Error at both playlists: " + errorMsgPlaylistOne
             } else if (playlistOneFailed) {
-                error = "The ID entered for Playlist 1 was incorrect."
+                error = "Error finding Playlist 1: " + errorMsgPlaylistOne
             } else if (playlistTwoFailed) {
-                error = "The ID entered for Playlist 2 was incorrect."
+                error = "Error finding Playlist 2: " + errorMsgPlaylistTwo
             }
 
             res.render('playlistMatch', { accessToken, accessTokenPresent, error })
+            return;
         }
 
         // Used in other stages, it adds more to the .tracks array
@@ -436,6 +437,13 @@ async function getSummaryInformation (accessToken, playlistSongs) {
         genreCount: Object.keys(allGenres).length,
         recentTracks
     }
+}
+
+function getErrorMessage(e) {
+    var errorMsg = e?.response?.data?.error?.message;
+    if (errorMsg === undefined) { errorMsg = "Unknown Error" };
+    console.log("Error Message: ", errorMsg)
+    return errorMsg
 }
 
 // Old way to get axios get request
