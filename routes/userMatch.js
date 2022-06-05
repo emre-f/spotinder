@@ -52,7 +52,7 @@ router.route('/validate')
                 }});
         } catch (e) {
             console.log("Caught an error for user 1")
-            console.log(e)
+            var errorMsgUserOne = getErrorMessage(e);
 
             var userOneFailed = true;
         } finally {
@@ -71,7 +71,7 @@ router.route('/validate')
                 }});
         } catch (e) {
             console.log("Caught an error for user 2")
-            console.log(e)
+            var errorMsgUserTwo = getErrorMessage(e);
 
             var userTwoFailed = true;
         } finally {
@@ -89,11 +89,11 @@ router.route('/validate')
             // Define error
             let error = ""
             if (userOneFailed && userTwoFailed) {
-                error = "Both IDs entered were incorrect."
+                error = "Error at both users: " + errorMsgUserOne
             } else if (userOneFailed) {
-                error = "The ID entered for User 1 was incorrect."
+                error = "Error finding User 1: " + errorMsgUserOne
             } else if (userTwoFailed) {
-                error = "The ID entered for User 2 was incorrect."
+                error = "Error finding User 2: " + errorMsgUserTwo
             }
 
             res.render('userMatch', { accessToken, accessTokenPresent, error })
@@ -150,7 +150,7 @@ async function getAllSongs (accessToken, userId, onlyPersonal = false, onlyUserA
             }});
     } catch (e) {
         console.log(`Caught an error for ${userId}, while getting playlists.`)
-        console.log(e.response.data.error)
+        getErrorMessage(e);
 
         var userFailed = true;
     } finally {
@@ -173,7 +173,7 @@ async function getAllSongs (accessToken, userId, onlyPersonal = false, onlyUserA
                 }});
         } catch (e) {
             console.log(`Caught an error for playlist with id ${playlistId}`)
-            console.log(e.response.data.error)
+            getErrorMessage(e);
 
             var playlistFailed = true;
         } finally {
@@ -244,7 +244,7 @@ async function getAllPlaylistSongs (accessToken, playlistData, userId, onlyOwner
                 }});
         } catch (e) {
             console.log("Caught an error getting extra songs")
-            console.log(e.response)
+            getErrorMessage(e);
     
             var getNextSongsFailed = true;
         } finally {
@@ -475,7 +475,7 @@ async function getSummaryInformation (accessToken, allSongs) {
                 }});
         } catch (e) {
             console.log("Caught an error getting all artists")
-            console.log(e.response.data.error)
+            getErrorMessage(e);
     
             var getAllArtistsFailed = true;
         } finally {
@@ -524,4 +524,11 @@ async function getSummaryInformation (accessToken, allSongs) {
         genreCount: Object.keys(allGenres).length,
         recentTracks
     }
+}
+
+function getErrorMessage(e) {
+    var errorMsg = e?.response?.data?.error?.message;
+    if (errorMsg === undefined) { errorMsg = "Unknown Error" };
+    console.log("Error Message: ", errorMsg)
+    return errorMsg
 }
