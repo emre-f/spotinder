@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Matchmaker</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+        integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+    <link rel="stylesheet" href="/stylesheets/home.css">
+</head>
+
+
+<body class="d-flex text-center text-white">
+
+    <canvas id="backgroundCanvas"></canvas>
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+
+        <header class="" style="margin-bottom:20px">
+            <div>
+                <h3 class="float-md-left mb-0">Spotify Matchmaker: 
+                    <% if (returnPoint == "/users") { %>
+                        Users
+                    <% } else if (returnPoint == "/playlists") { %>
+                        Playlists
+                    <% } %>
+                </h3>
+                <nav class="nav nav-masthead justify-content-center float-md-right">
+                    <a class="nav-link active" aria-current="page" href="/"> Home </a>
+                    <a class="nav-link active" aria-current="page" href="<%= returnPoint %>"> Go Back </a>
+                    <% if(!accessTokenPresent) { %>
+                        <a class="nav-link" href="/auth">Authenticate with Spotify</a>
+                        <% } else { %>
+                            <!-- <a class="nav-link" href="/logout">Logout</a> -->
+                            <% } %>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+
+
+
+            <!-- TITLES -->
+            <div class="row justify-content-between" style="padding:0;">
+                <div class="col-sm-5" style="padding:0;">
+                    <p class="lead possibleOverflowLeft" style="font-size: 30px; font-weight: 500;"> <%= playlistOneName %> </p>
+                </div>
+                <div class="col-sm-5" style="padding:0;">
+                    <p class="lead possibleOverflowRight" style="font-size: 30px; font-weight: 500 ;"> <%= playlistTwoName %> </p>
+                </div>
+            </div>
+
+
+
+            <!-- INTRODUCTORY INFORMATION -->
+            <div class="row justify-content-between" style="padding:0;">
+                <div class="col-sm-5" style="padding:0;">
+                    <div class="input-group w-5 h-5 align-items-center justify-content-center">
+                        <span class="overflow topResults input-group-text form-control"
+                            style="display:block;">
+                            <%= playlistOneOwnerName %>
+                        </span>
+                        <span class="topResults input-group-text form-control" style="display:block;">
+                            <%= playlistOneFollowerCount %> 
+
+                            <% if (playlistOneFollowerCount > 1) { %>
+                                Followers
+                            <% } else { %>
+                                Follower
+                            <% } %>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-sm-2" style="padding:0; display: table;"> 
+                    <div class="centeredDiv" style="display:table-cell; vertical-align:middle;"> 
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <button class="swapButton btn selected" id="showSummaryButton">Summary</button>
+                            <button class="swapButton btn" id="showMatchButton">Match</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-5" style="padding:0;">
+                    <div class="input-group w-5 h-5 align-items-center justify-content-center">
+                        <span class="topResults input-group-text form-control" style="display:block;">
+                            <%= playlistTwoFollowerCount %> 
+
+                            <% if (playlistTwoFollowerCount > 1) { %>
+                                Followers
+                            <% } else { %>
+                                Follower
+                            <% } %>
+                        </span>
+                        <span class="topResults input-group-text form-control"
+                            style="display:block;">
+                            <%= playlistTwoOwnerName %>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="totalPlaylistSummary">
+                <%- include('partials/showPlaylistSummary.ejs') %>
+            </div>
+
+            <div class="totalPlaylistMatch">
+                <%- include('partials/showPlaylistMatch.ejs') %>
+            </div>
+            
+
+        </main>
+
+        <footer class="mt-auto text-white-50">
+            <p>&copy; 2022 </p>
+        </footer>
+
+
+    </div>
+
+    <!-- JavaScript / JQuery -->
+    <script>
+        const dotColor = '#1DB954';
+        let bothPlaylistsValid = false; // disable the button compare playlists if not, use jquery
+        let accessToken = document.getElementById('hiddenAccessToken')?.value;
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(".possibleOverflowLeft").each(function(){
+            e = $(this);
+            e.addClass('overflow');
+        });
+
+        $(".possibleOverflowRight").each(function(){
+            e = $(this);
+            e.addClass('rightOverflow');
+        });
+
+        checkOverflowElements();
+
+        $('.totalPlaylistSummary').attr("hidden", false);
+        $('.totalPlaylistMatch').attr("hidden", true);
+
+        jQuery(':button').click(function () {
+            if (this.id == 'showSummaryButton') {
+                // Give them all overflow first (all will be removed since they aren't seen, then remove from extra ones)
+                // $(".possibleOverflowLeft").each(function(){
+                //     e = $(this);
+                //     e.addClass('overflow');
+                // });
+
+                // $(".possibleOverflowRight").each(function(){
+                //     e = $(this);
+                //     e.addClass('rightOverflow');
+                // });
+                
+                // // Now check to remove them
+                // setTimeout(function (){ checkOverflowElements(); }, 100);
+                // setTimeout(function (){ checkOverflowElements(); }, 1000);
+
+                jQuery('#showSummaryButton').addClass('selected');
+                $('.totalPlaylistSummary').attr("hidden", false);
+
+                jQuery('#showMatchButton').removeClass('selected');
+                $('.totalPlaylistMatch').attr("hidden", true);
+            }
+            else if (this.id == 'showMatchButton') {
+
+                // Give them all overflow first (all will be removed since they aren't seen, then remove from extra ones)
+                // $(".possibleOverflowLeft").each(function(){
+                //     e = $(this);
+                //     e.addClass('overflow');
+                // });
+
+                // $(".possibleOverflowRight").each(function(){
+                //     e = $(this);
+                //     e.addClass('rightOverflow');
+                // });
+                
+                // // Now check to remove them
+                // setTimeout(function (){ checkOverflowElements(); }, 100);
+                // setTimeout(function (){ checkOverflowElements(); }, 1000);
+
+                jQuery('#showMatchButton').addClass('selected');
+                $('.totalPlaylistMatch').attr("hidden", false);
+
+                jQuery('#showSummaryButton').removeClass('selected');
+                $('.totalPlaylistSummary').attr("hidden", true);
+            }
+        });
+
+        function checkOverflowElements() {
+            var toBeRemoved = []
+            // DETECT ELLIPSIS AND GIVE CLASS
+
+            // FOR LEFT
+            $(".overflow").each(function(){
+                // Test if the div element is empty
+                e = $(this);
+                if(!isEllipsisActive(e)) {
+                    toBeRemoved.push(e);// Elipsis not active
+                }
+            });
+
+            // FOR RIGHT
+            $(".rightOverflow").each(function(){
+                // Test if the div element is empty
+                e = $(this);
+                if(!isEllipsisActive(e)) {
+                    toBeRemoved.push(e);// Elipsis not active
+                }
+            });
+            console.log("Length: ", toBeRemoved.length)
+            for (let i = 0; i < toBeRemoved.length; i++) {
+                e = toBeRemoved[i];
+                e.removeClass('overflow');
+                e.removeClass('rightOverflow');
+            }
+        }
+
+        function isEllipsisActive($jQueryObject) {
+            // Rounding because sometimes values come out to be 96.025 etc where it should be 96
+            return (Math.round($jQueryObject.width()) < Math.round($jQueryObject[0].scrollWidth));
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
+        integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
+        crossorigin="anonymous"></script>
+    <script src="/javascripts/backgroundCanvas.js">
+    </script>
+</body>
+
+</html>
