@@ -16,7 +16,7 @@ jobs:
     - name: Build
       run: |
         npm install
-        npm build .
+        npm run-script build
       env:
         CLIENT_ID: ${{ secrets.CLIENT_ID }}
         CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
