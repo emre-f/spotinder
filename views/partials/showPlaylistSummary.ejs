@@ -2,24 +2,28 @@
 <div class="row justify-content-between" style="padding:0;">
     <div class="col-sm-5" style="padding:0;">
         <div class="row">
-            <% for (let i=Math.min(4, playlistOneRecentTracks.length - 1); i>= 0 ; i--) { %>
-                <div class="col" style="max-width:155px">
+            <% for (let i=4; i>= 0 ; i--) { %>
+                <% if (playlistOneRecentTracks[i] === null || playlistOneRecentTracks[i] === undefined) { %>
+                    <div class="col" style="max-width:155px"></div>
+                <% } else { %>
+                    <div class="col" style="max-width:155px">
 
-                    <img class="img" src="<%= playlistOneRecentTracks[i][1].album.images[1].url %>"
-                        style="margin-top: 1rem; width:120px; height: 120px; border: 1px solid rgba(255, 255, 255, 0.5);"
-                        alt="artistImage" />
+                        <img class="img" src="<%= playlistOneRecentTracks[i][1].album.images[1].url %>"
+                            style="margin-top: 1rem; width:120px; height: 120px; border: 1px solid rgba(255, 255, 255, 0.5);"
+                            alt="artistImage" />
 
-                    <p class="possibleOverflowLeft" style="margin-bottom: 0;"> 
-                        <span class="artistName lead"> <%= playlistOneRecentTracks[i][1].name %> </span>    
-                    </p>
-          
-                    <p class="possibleOverflowLeft" style="margin-bottom: 0;"> 
-                        <span class="countValue lead" style="font-size:1.1rem;"> 
-                            <%= playlistOneRecentTracks[i][1].artists[0].name %> 
-                        </span> 
-                    </p>
-                    
-                </div>
+                        <p class="possibleOverflowLeft" style="margin-bottom: 0;"> 
+                            <span class="artistName lead"> <%= playlistOneRecentTracks[i][1].name %> </span>    
+                        </p>
+            
+                        <p class="possibleOverflowLeft" style="margin-bottom: 0;"> 
+                            <span class="countValue lead" style="font-size:1.1rem;"> 
+                                <%= playlistOneRecentTracks[i][1].artists[0].name %> 
+                            </span> 
+                        </p>
+                        
+                    </div>
+                <% } %>
             <% } %>
         </div>
     </div>
@@ -62,23 +66,27 @@
 <div class="row justify-content-between" style="padding:0;">
     <div class="col-sm-5" style="padding:0;">
         <div class="row">
-            <% for (let i=Math.min(4, playlistOneArtistCount.length - 1); i>= 0 ; i--) { %>
-                <div class="col" style="max-width:155px">
-                    <img class="img" src="<%= playlistOneArtistCount[i][0].images[2].url %>"
-                        style="margin-top: 1rem; width:120px; height: 120px; border: 1px solid rgba(255, 255, 255, 0.5);"
-                        alt="artistImage" />
-
-                    <p class="possibleOverflowLeft" style="margin-bottom: 0;"> 
-                        <span class="artistName lead"> <%= playlistOneArtistCount[i][0].name %> </span> 
-                    </p>
-          
-                    <p class="possibleOverflowLeft" style="margin-bottom: 0;"> 
-                        <span class="countValue lead"> 
-                            <%= playlistOneArtistCount[i][1] %>
-                        </span> 
-                    </p>
-                </div>
+            <% for (let i=4; i>= 0 ; i--) { %>
+                <% if (playlistOneArtistCount[i] === null || playlistOneArtistCount[i] === undefined) { %>
+                    <div class="col" style="max-width:155px"></div>
+                <% } else { %>
+                    <div class="col" style="max-width:155px">
+                        <img class="img" src="<%= playlistOneArtistCount[i][0].images[2].url %>"
+                            style="margin-top: 1rem; width:120px; height: 120px; border: 1px solid rgba(255, 255, 255, 0.5);"
+                            alt="artistImage" />
+    
+                        <p class="possibleOverflowLeft" style="margin-bottom: 0;"> 
+                            <span class="artistName lead"> <%= playlistOneArtistCount[i][0].name %> </span> 
+                        </p>
+              
+                        <p class="possibleOverflowLeft" style="margin-bottom: 0;"> 
+                            <span class="countValue lead"> 
+                                <%= playlistOneArtistCount[i][1] %>
+                            </span> 
+                        </p>
+                    </div>
                 <% } %>
+            <% } %>
         </div>
     </div>
     <div class="col-sm-2" style="padding:0; display: table;">
@@ -119,8 +127,10 @@
     <div class="col-sm-5" style="padding:0; display: table;">
         <div style="display:table-cell; vertical-align:middle;">
             <div class="row">
-                <% if (playlistOneGenres.length > 0) { %> 
-                    <% for (let i=Math.min(4, playlistOneGenres.length); i>= 0 ; i--) { %>
+                <% for (let i=4; i>= 0 ; i--) { %>
+                    <% if (playlistOneGenres[i] === null || playlistOneGenres[i] === undefined) { %>
+                        <div class="col" style="max-width:155px"></div>
+                    <% } else { %>
                         <div class="col" style="max-width:155px;">
                             <p class="possibleOverflowLeft" style="margin-bottom: 0;"> 
                                 <span class="artistName lead"> <%= playlistOneGenres[i][0] %> </span> 
