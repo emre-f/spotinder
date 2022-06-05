@@ -49,7 +49,8 @@ router.route('/validate')
                 }});
         } catch (e) {
             console.log("Caught an error for playlist 1")
-            console.log(e.response.data.error)
+            console.log(e);
+            // console.log(e.response.data.error)
 
             var playlistOneFailed = true;
         } finally {
