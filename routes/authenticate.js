@@ -21,6 +21,7 @@ var stateKey = 'spotify_auth_state';
 
 router.route('/')
     .get((req, res) => {
+        console.log("SERVER PORT: ", res.serverPort)
         var state = generateRandomString(16);
         res.cookie(stateKey, state);
 
