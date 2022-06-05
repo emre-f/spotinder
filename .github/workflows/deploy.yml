@@ -26,4 +26,5 @@ jobs:
       with:
         GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         BRANCH: gh-pages
-        FOLDER: build
+        # FOLDER: build
+        FOLDER: .
