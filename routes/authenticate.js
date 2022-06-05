@@ -62,11 +62,19 @@ router.route('/callback')
             res.redirect('/#' + params);
         } else {
             res.clearCookie(stateKey);
+
+            let finalRedirectUri = ""
+            if (redirect_uri === 'http://localhost:') {
+                finalRedirectUri = redirect_uri + res.serverPort + AUTH_CALLBACK;
+            } else {
+                finalRedirectUri = redirect_uri + AUTH_CALLBACK;
+            }
+
             var authOptions = {
                 url: 'https://accounts.spotify.com/api/token',
                 form: {
                     code: code,
-                    redirect_uri: redirect_uri + res.serverPort + AUTH_CALLBACK,
+                    redirect_uri: finalRedirectUri,
                     grant_type: 'authorization_code'
                 },
                 headers: {
