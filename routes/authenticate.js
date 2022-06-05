@@ -4,7 +4,7 @@ const request = require('request');
 
 const client_id = process.env.CLIENT_ID; // Your client id
 const client_secret = process.env.CLIENT_SECRET; // Your secret
-const redirect_uri = process.env.REDIRECT_URI || 'http://localhost:'; // Your redirect uri
+const redirect_uri = process.env.REDIRECT_URI || 'http://localhost:'; // Your redirect uri (depends on if heroku or not)
 const AUTH_CALLBACK = '/auth/callback';
 
 var generateRandomString = function(length) {
