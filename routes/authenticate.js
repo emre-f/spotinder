@@ -27,11 +27,18 @@ router.route('/')
         // your application requests authorization
         var scope = 'user-read-private user-read-email';
 
+        let finalRedirectUri = ""
+        if (redirect_uri === 'http://localhost:') {
+            finalRedirectUri = redirect_uri + res.serverPort + AUTH_CALLBACK;
+        } else {
+            finalRedirectUri = redirect_uri + AUTH_CALLBACK;
+        }
+
         const params = new URLSearchParams({
             response_type: 'code',
             client_id: client_id,
             scope: scope,
-            redirect_uri: redirect_uri + res.serverPort + AUTH_CALLBACK,
+            redirect_uri: finalRedirectUri,
             state: state
         }).toString();
 
