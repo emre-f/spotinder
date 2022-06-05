@@ -52,7 +52,7 @@ router.route('/validate')
                 }});
         } catch (e) {
             console.log("Caught an error for user 1")
-            console.log(e.response.data.error)
+            console.log(e)
 
             var userOneFailed = true;
         } finally {
@@ -71,7 +71,7 @@ router.route('/validate')
                 }});
         } catch (e) {
             console.log("Caught an error for user 2")
-            console.log(e.response.data.error)
+            console.log(e)
 
             var userTwoFailed = true;
         } finally {
