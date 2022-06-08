@@ -8,12 +8,13 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
         integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
     <link rel="stylesheet" href="/stylesheets/home.css">
+    <link rel="stylesheet" href="/stylesheets/chart.css">
 </head>
 
 
 <body class="d-flex text-center text-white">
 
-    <canvas id="backgroundCanvas"></canvas>
+    <canvas id="backgroundCanvas" style="position:fixed"></canvas>
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
 
         <header class="" style="margin-bottom:20px">
@@ -99,7 +100,7 @@
                         </span>
                     </div>
                 </div>
-            </div>
+            </div> 
 
             <div class="totalPlaylistSummary">
                 <%- include('partials/showPlaylistSummary.ejs') %>
@@ -108,10 +109,27 @@
             <div class="totalPlaylistMatch">
                 <%- include('partials/showPlaylistMatch.ejs') %>
             </div>
-            
 
-        </main>
+            <br>
+            <hr class="rounded" style="height: 5px;">
+            <br>
 
+            <h1>hi</h1>
+
+            <div class="row">
+                <div class="col-sm-6" style="padding:10px;">
+                    <div class="chart-wrapper" id="chart-line1"></div>
+                </div>
+
+                <div class="col-sm-6" style="padding:10px;">
+                    <div class="chart-wrapper" id="chart-line2"></div>
+                </div>
+            </div>
+
+            <br>
+            <hr class="rounded" style="height: 5px;">
+        </main> 
+        
         <footer class="mt-auto text-white-50">
             <p>&copy; 2022 </p>
         </footer>
@@ -144,20 +162,6 @@
 
         jQuery(':button').click(function () {
             if (this.id == 'showSummaryButton') {
-                // Give them all overflow first (all will be removed since they aren't seen, then remove from extra ones)
-                // $(".possibleOverflowLeft").each(function(){
-                //     e = $(this);
-                //     e.addClass('overflow');
-                // });
-
-                // $(".possibleOverflowRight").each(function(){
-                //     e = $(this);
-                //     e.addClass('rightOverflow');
-                // });
-                
-                // // Now check to remove them
-                // setTimeout(function (){ checkOverflowElements(); }, 100);
-                // setTimeout(function (){ checkOverflowElements(); }, 1000);
 
                 jQuery('#showSummaryButton').addClass('selected');
                 $('.totalPlaylistSummary').attr("hidden", false);
@@ -166,21 +170,6 @@
                 $('.totalPlaylistMatch').attr("hidden", true);
             }
             else if (this.id == 'showMatchButton') {
-
-                // Give them all overflow first (all will be removed since they aren't seen, then remove from extra ones)
-                // $(".possibleOverflowLeft").each(function(){
-                //     e = $(this);
-                //     e.addClass('overflow');
-                // });
-
-                // $(".possibleOverflowRight").each(function(){
-                //     e = $(this);
-                //     e.addClass('rightOverflow');
-                // });
-                
-                // // Now check to remove them
-                // setTimeout(function (){ checkOverflowElements(); }, 100);
-                // setTimeout(function (){ checkOverflowElements(); }, 1000);
 
                 jQuery('#showMatchButton').addClass('selected');
                 $('.totalPlaylistMatch').attr("hidden", false);
@@ -211,7 +200,7 @@
                     toBeRemoved.push(e);// Elipsis not active
                 }
             });
-            console.log("Length: ", toBeRemoved.length)
+
             for (let i = 0; i < toBeRemoved.length; i++) {
                 e = toBeRemoved[i];
                 e.removeClass('overflow');
@@ -230,7 +219,10 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
         integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
         crossorigin="anonymous"></script>
-    <script src="/javascripts/backgroundCanvas.js">
+    <script src="/javascripts/backgroundCanvas.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script src="/javascripts/chart.js"></script>
     </script>
 </body>
 

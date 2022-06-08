@@ -13,24 +13,28 @@
 
     <div class="col-sm-10" style="padding:0;">
         <div class="row">
-            <% for (let i = 0; i < Math.min(10, matchingSongs.length) ; i++) { %>
-                <div class="col" style="max-width:155px">
+            <% for (let i = 0; i < 10 ; i++) { %>
+                <% if (matchingSongs[i] === null || matchingSongs[i] === undefined) { %>
+                    <div class="col itemCard"></div>
+                <% } else { %>
+                    <div class="col itemCard">
 
-                    <img class="img" src="<%= matchingSongs[i].track.album.images[1]?.url %>"
-                        style="margin-top: 1rem; width:120px; height: 120px; border: 1px solid rgba(255, 255, 255, 0.5);"
-                        alt="artistImage" />
-
-                    <p class="possibleOverflowRight" style="margin-bottom: 0;"> 
-                        <span class="artistName lead"> <%= matchingSongs[i].track.name %> </span> 
-                    </p>
-          
-                    <p class="possibleOverflowRight" style="clear:both; margin-bottom: 0;"> 
-                        <span class="countValue lead" style="font-size:1.1rem;"> 
-                            <%= matchingSongs[i].track.artists[0].name %> 
-                        </span> 
-                    </p>
-                    
-                </div>
+                        <img class="img" src="<%= matchingSongs[i].track.album.images[1]?.url %>"
+                            style="margin-top: 1rem; width:120px; height: 120px; border: 1px solid rgba(255, 255, 255, 0.5);"
+                            alt="artistImage" />
+    
+                        <p class="possibleOverflowRight" style="margin-bottom: 0;"> 
+                            <span class="artistName lead"> <%= matchingSongs[i].track.name %> </span> 
+                        </p>
+              
+                        <p class="possibleOverflowRight" style="clear:both; margin-bottom: 0;"> 
+                            <span class="countValue lead" style="font-size:1.1rem;"> 
+                                <%= matchingSongs[i].track.artists[0].name %> 
+                            </span> 
+                        </p>
+                        
+                    </div>
+                <% } %>
             <% } %>
         </div>
     </div>
@@ -53,23 +57,27 @@
 
     <div class="col-sm-10" style="padding:0;">
         <div class="row">
-            <% for (let i = 0; i < Math.min(10, matchingArtists.length) ; i++)  { %>
-                <div class="col" style="max-width:155px">
-                    <img class="img" src="<%= matchingArtists[i].artist.images[2].url %>"
-                        style="margin-top: 1rem; width:120px; height: 120px; border: 1px solid rgba(255, 255, 255, 0.5);"
-                        alt="artistImage" />
-
-                    <p class="possibleOverflowRight" style="margin-bottom: 0;"> 
-                        <span class="artistName lead"> <%= matchingArtists[i].artist.name %> </span> 
-                    </p>
-          
-                    <p class="possibleOverflowRight" style="clear:both; margin-bottom: 0;"> 
-                        <span class="countValue lead"> 
-                            #<%= matchingArtists[i].playlistOneRank %> | #<%= matchingArtists[i].playlistTwoRank %>
-                        </span> 
-                    </p>
-                </div>
+            <% for (let i = 0; i < 10 ; i++)  { %>
+                <% if (matchingArtists[i] === null || matchingArtists[i] === undefined) { %>
+                    <div class="col itemCard"></div>
+                <% } else { %>
+                    <div class="col itemCard">
+                        <img class="img" src="<%= matchingArtists[i].artist.images[2].url %>"
+                            style="margin-top: 1rem; width:120px; height: 120px; border: 1px solid rgba(255, 255, 255, 0.5);"
+                            alt="artistImage" />
+    
+                        <p class="possibleOverflowRight" style="margin-bottom: 0;"> 
+                            <span class="artistName lead"> <%= matchingArtists[i].artist.name %> </span> 
+                        </p>
+              
+                        <p class="possibleOverflowRight" style="clear:both; margin-bottom: 0;"> 
+                            <span class="countValue lead"> 
+                                #<%= matchingArtists[i].playlistOneRank %> | #<%= matchingArtists[i].playlistTwoRank %>
+                            </span> 
+                        </p>
+                    </div>
                 <% } %>
+            <% } %>
         </div>
     </div>
 </div>
@@ -78,7 +86,7 @@
 
 <!-- GENRES --> <br>
 <div class="row justify-content-between" style="padding:0;">
-    <div class="col-sm-2" style="padding:0; display: table;">
+    <div class="col-sm-2" style="padding:0; display: table; height:107px;">
         <div class="centeredDiv" style="display:table-cell; vertical-align:middle;"> 
             <p class="artistName lead"> Genres </p>
             <p class="countValue lead" style="font-size:1.1rem;"> <%= matchingGenres.length %> matching </p>
@@ -92,18 +100,22 @@
     <div class="col-sm-10" style="padding:0; display: table;">
         <div style="display:table-cell; vertical-align:middle;">
             <div class="row">
-                <% for (let i = 0; i < Math.min(10, matchingGenres.length) ; i++) { %>
-                    <div class="col" style="max-width:155px;">
-                        <p class="possibleOverflowRight" style="margin-bottom: 0;"> 
-                            <span class="artistName lead"> <%= matchingGenres[i].genre %> </span> 
-                        </p>
-              
-                        <p class="possibleOverflowRight" style="clear:both; margin-bottom: 0;"> 
-                            <span class="countValue lead"> 
-                                #<%= matchingGenres[i].playlistOneRank %> | #<%= matchingGenres[i].playlistTwoRank %>
-                            </span> 
-                        </p>
-                    </div>
+                <% for (let i = 0; i < 10 ; i++) { %>
+                    <% if (matchingGenres[i] === null || matchingGenres[i] === undefined) { %>
+                        <div class="col gernreCard"></div>
+                    <% } else { %>
+                        <div class="col genreCard">
+                            <p class="possibleOverflowRight" style="margin-bottom: 0;"> 
+                                <span class="artistName lead"> <%= matchingGenres[i].genre %> </span> 
+                            </p>
+                
+                            <p class="possibleOverflowRight" style="clear:both; margin-bottom: 0;"> 
+                                <span class="countValue lead"> 
+                                    #<%= matchingGenres[i].playlistOneRank %> | #<%= matchingGenres[i].playlistTwoRank %>
+                                </span> 
+                            </p>
+                        </div>
+                    <% } %>
                 <% } %>
             </div>
         </div>
