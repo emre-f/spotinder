@@ -45,10 +45,16 @@
             <!-- TITLES -->
             <div class="row justify-content-between" style="padding:0;">
                 <div class="col-sm-5" style="padding:0;">
-                    <p class="lead possibleOverflowLeft" style="font-size: 30px; font-weight: 500;"> <%= playlistOneName %> </p>
+                    <span>
+                        <p class="lead possibleOverflowLeft" style="font-size: 30px; font-weight: 500;"> 
+                            <a href="<%= linkToMainOne %>" target="_blank"> <%= playlistOneName %> </a>
+                        </p>
+                    </span>
                 </div>
                 <div class="col-sm-5" style="padding:0;">
-                    <p class="lead possibleOverflowRight" style="font-size: 30px; font-weight: 500 ;"> <%= playlistTwoName %> </p>
+                    <p class="lead possibleOverflowRight" style="font-size: 30px; font-weight: 500 ;"> 
+                        <a href="<%= linkToMainTwo %>" target="_blank"> <%= playlistTwoName %> </a>
+                    </p>
                 </div>
             </div>
 
@@ -60,7 +66,7 @@
                     <div class="input-group w-5 h-5 align-items-center justify-content-center">
                         <span class="overflow topResults input-group-text form-control"
                             style="display:block;">
-                            <%= playlistOneOwnerName %>
+                            <a <% if (linkToOwnerOneExists) { %> href="<%= linkToOwnerOne %>" target="_blank" <% } %> > <%=playlistOneOwnerName %> </a> 
                         </span>
                         <span class="topResults input-group-text form-control" style="display:block;">
                             <%= playlistOneFollowerCount %> 
@@ -96,7 +102,7 @@
                         </span>
                         <span class="topResults input-group-text form-control"
                             style="display:block;">
-                            <%= playlistTwoOwnerName %>
+                            <a <% if (linkToOwnerTwoExists) { %> href="<%= linkToOwnerTwo %>" target="_blank" <% } %> > <%=playlistTwoOwnerName %> </a> 
                         </span>
                     </div>
                 </div>
@@ -114,20 +120,32 @@
             <hr class="rounded" style="height: 5px;">
             <br>
 
-            <h1>hi</h1>
-
+            <!-- SONG RELEASE DATES -->
+            <h1 class="chartTitle">Song Release Dates</h1>
             <div class="row">
                 <div class="col-sm-6" style="padding:10px;">
-                    <div class="chart-wrapper" id="chart-line1"></div>
+                    <div class="chart-wrapper" id="chart1"></div>
                 </div>
-
+                
                 <div class="col-sm-6" style="padding:10px;">
-                    <div class="chart-wrapper" id="chart-line2"></div>
+                    <div class="chart-wrapper" id="chart2"></div>
                 </div>
             </div>
 
-            <br>
-            <hr class="rounded" style="height: 5px;">
+            <hr class="rounded">
+
+            <!-- GENRE COUNTS OVER TIME -->
+            <h1 class="chartTitle">Trends of Top Genres over Time</h1>
+            <div class="row">
+                <div class="col-sm-6" style="padding:10px;">
+                    <div class="chart-wrapper" id="chart3"></div>
+                </div>
+                
+                <div class="col-sm-6" style="padding:10px;">
+                    <div class="chart-wrapper" id="chart4"></div>
+                </div>
+            </div>
+
         </main> 
         
         <footer class="mt-auto text-white-50">

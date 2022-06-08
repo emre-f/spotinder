@@ -134,10 +134,14 @@ g > text {
     border-radius: 12px;
     color: white;
     background-color: rgba(10, 64, 29, 1);
-    opacity: 0.6;
+    opacity: 1;
     padding:10px;
 }
 
 g {
     pointer-events: none;
+}
+
+.chartTitle {
+    font-size: 30px;
 }

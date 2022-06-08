@@ -13,12 +13,18 @@
                             alt="artistImage" />
 
                         <p class="possibleOverflowLeft" style="margin-bottom: 0;"> 
-                            <span class="artistName lead"> <%= playlistOneRecentTracks[i][1].name %> </span>    
+                            <span class="artistName lead"> 
+                                <a href="<%= playlistOneRecentTracks[i][1].external_urls.spotify %>" target="_blank"> 
+                                    <%= playlistOneRecentTracks[i][1].name %> 
+                                </a>
+                            </span>    
                         </p>
             
                         <p class="possibleOverflowLeft" style="margin-bottom: 0;"> 
                             <span class="countValue lead" style="font-size:1.1rem;"> 
-                                <%= playlistOneRecentTracks[i][1].artists[0].name %> 
+                                <a href="<%= playlistOneRecentTracks[i][1].artists[0].external_urls.spotify %>" target="_blank"> 
+                                    <%= playlistOneRecentTracks[i][1].artists[0].name %> 
+                                </a>
                             </span> 
                         </p>
                         
@@ -46,12 +52,16 @@
                         alt="artistImage" />
                   
                     <p class="possibleOverflowRight" style="margin-bottom: 0;"> 
-                        <span class="artistName lead"> <%= playlistTwoRecentTracks[i][1].name %> </span> 
+                        <a href="<%= playlistTwoRecentTracks[i][1].external_urls.spotify %>" target="_blank">
+                            <span class="artistName lead"> <%= playlistTwoRecentTracks[i][1].name %> </span> 
+                        </a>
                     </p>
                   
                     <p class="possibleOverflowRight" style="clear:both; margin-bottom: 0;"> 
                         <span class="countValue lead" style="font-size:1.1rem;"> 
-                            <%= playlistTwoRecentTracks[i][1].artists[0].name %> 
+                            <a href="<%= playlistTwoRecentTracks[i][1].artists[0].external_urls.spotify %>" target="_blank"> 
+                                <%= playlistTwoRecentTracks[i][1].artists[0].name %> 
+                            </a>
                         </span> 
                     </p>
                 </div>
@@ -76,7 +86,9 @@
                             alt="artistImage" />
     
                         <p class="possibleOverflowLeft" style="margin-bottom: 0;"> 
-                            <span class="artistName lead"> <%= playlistOneArtistCount[i][0].name %> </span> 
+                            <a href="<%= playlistOneArtistCount[i][0].external_urls.spotify %>" target="_blank">
+                                <span class="artistName lead"> <%= playlistOneArtistCount[i][0].name %> </span> 
+                            </a>
                         </p>
               
                         <p class="possibleOverflowLeft" style="margin-bottom: 0;"> 
@@ -106,7 +118,9 @@
                         alt="artistImage" />
 
                     <p class="possibleOverflowRight" style="margin-bottom: 0;"> 
-                        <span class="artistName lead"> <%= playlistTwoArtistCount[i][0].name %> </span> 
+                        <a href="<%= playlistTwoArtistCount[i][0].external_urls.spotify %>" target="_blank">
+                            <span class="artistName lead"> <%= playlistTwoArtistCount[i][0].name %> </span> 
+                        </a>
                     </p>
           
                     <p class="possibleOverflowRight" style="clear:both; margin-bottom: 0;"> 

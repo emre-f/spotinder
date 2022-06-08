@@ -132,6 +132,9 @@ router.route('/validate')
             playlistOneName: userOneId, playlistTwoName: userTwoId,
             playlistOneOwnerName: userOneData.display_name, playlistTwoOwnerName: userTwoData.display_name, 
             playlistOneFollowerCount: userOneData.followers.total, playlistTwoFollowerCount: userTwoData.followers.total,
+            linkToMainOne: userOneData.external_urls.spotify, linkToMainTwo: userTwoData.external_urls.spotify,
+
+            linkToOwnerOneExists: false, linkToOwnerTwoExists: false,
 
             returnPoint: "/users"
         })
