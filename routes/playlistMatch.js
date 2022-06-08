@@ -142,6 +142,8 @@ async function getAllSongs (accessToken, playlistData, onlyOwnerSongs) {
     for (let i = 0; i < playlistData.tracks.items.length; i++) {
         let track = playlistData.tracks.items[i];
 
+        if (Math.floor(track.track.album.release_date.substring(1, 5)) < 2000) { console.log(track) };
+
         if (onlyOwnerSongs && track.added_by.id !== playlistData.owner.id) {
             continue;
         }
@@ -162,7 +164,7 @@ async function getAllSongs (accessToken, playlistData, onlyOwnerSongs) {
                 }});
         } catch (e) {
             console.log("Caught an error getting extra songs")
-            console.log(e.response)
+            getErrorMessage(e);
     
             var getNextSongsFailed = true;
         } finally {

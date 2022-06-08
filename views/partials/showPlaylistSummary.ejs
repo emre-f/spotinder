@@ -4,9 +4,9 @@
         <div class="row">
             <% for (let i=4; i>= 0 ; i--) { %>
                 <% if (playlistOneRecentTracks[i] === null || playlistOneRecentTracks[i] === undefined) { %>
-                    <div class="col" style="max-width:155px"></div>
+                    <div class="col itemCard"></div>
                 <% } else { %>
-                    <div class="col" style="max-width:155px">
+                    <div class="col itemCard">
 
                         <img class="img" src="<%= playlistOneRecentTracks[i][1].album.images[1].url %>"
                             style="margin-top: 1rem; width:120px; height: 120px; border: 1px solid rgba(255, 255, 255, 0.5);"
@@ -40,7 +40,7 @@
     <div class="col-sm-5" style="padding:0;">
         <div class="row">
             <% for (let i=0; i < Math.min(5, playlistTwoRecentTracks.length); i++) { %>
-                <div class="col" style="max-width:155px;">
+                <div class="col itemCard">
                     <img class="img" src="<%= playlistTwoRecentTracks[i][1].album.images[1].url %>"
                         style="margin-top: 1rem; width:120px; height: 120px; border: 1px solid rgba(255, 255, 255, 0.5);"
                         alt="artistImage" />
@@ -68,9 +68,9 @@
         <div class="row">
             <% for (let i=4; i>= 0 ; i--) { %>
                 <% if (playlistOneArtistCount[i] === null || playlistOneArtistCount[i] === undefined) { %>
-                    <div class="col" style="max-width:155px"></div>
+                    <div class="col itemCard"></div>
                 <% } else { %>
-                    <div class="col" style="max-width:155px">
+                    <div class="col itemCard">
                         <img class="img" src="<%= playlistOneArtistCount[i][0].images[2].url %>"
                             style="margin-top: 1rem; width:120px; height: 120px; border: 1px solid rgba(255, 255, 255, 0.5);"
                             alt="artistImage" />
@@ -100,7 +100,7 @@
     <div class="col-sm-5" style="padding:0;">
         <div class="row">
             <% for (let i=0; i < Math.min(5, playlistTwoArtistCount.length); i++) { %>
-                <div class="col" style="max-width:155px">
+                <div class="col itemCard">
                     <img class="img" src="<%= playlistTwoArtistCount[i][0].images[2].url %>"
                         style="margin-top: 1rem; width:120px; height: 120px; border: 1px solid rgba(255, 255, 255, 0.5);"
                         alt="artistImage" />
@@ -129,9 +129,9 @@
             <div class="row">
                 <% for (let i=4; i>= 0 ; i--) { %>
                     <% if (playlistOneGenres[i] === null || playlistOneGenres[i] === undefined) { %>
-                        <div class="col" style="max-width:155px"></div>
+                        <div class="col genreCard"></div>
                     <% } else { %>
-                        <div class="col" style="max-width:155px;">
+                        <div class="col genreCard">
                             <p class="possibleOverflowLeft" style="margin-bottom: 0;"> 
                                 <span class="artistName lead"> <%= playlistOneGenres[i][0] %> </span> 
                             </p>
@@ -148,7 +148,7 @@
         </div>
     </div>
     <div class="col-sm-2" style="padding:0; display: table;">
-        <div class="centeredDiv" style="display:table-cell; vertical-align:middle;"> 
+        <div class="centeredDiv" style="display:table-cell; vertical-align:middle; height:107px;"> 
             <p class="artistName lead"> Genres </p>
             <p class="artistName lead" style="font-size:1.1rem;"> Unique Genres </p>
             <p class="countValue lead" style="font-size:1.1rem;"> <%= playlistOneGenreCount %> | <%= playlistTwoGenreCount %> </p>
@@ -160,7 +160,7 @@
             <div class="row">
                 <% if (playlistTwoGenres.length > 0) { %> 
                     <% for (let i=0; i < Math.min(5, playlistTwoGenres.length); i++) { %>
-                        <div class="col" style="max-width:155px;">
+                        <div class="col genreCard">
                             <p class="possibleOverflowRight" style="margin-bottom: 0;"> 
                                 <span class="artistName lead"> <%= playlistTwoGenres[i][0] %> </span> 
                             </p>
