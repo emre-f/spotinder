@@ -29,7 +29,6 @@ function makeLineChart(chartName, dataset, xName, yObjs, axisLables) {
         yObjs[y].yFunct = getYFn(yObjs[y].column); //Need this  list for the ymax function
         chartObj.yFuncts.push(yObjs[y].yFunct);
     }
-    console.log(yObjs)
 
     // Formatter functions for the axes
     chartObj.formatAsNumber = d3.format(".0f");
@@ -178,7 +177,7 @@ function makeLineChart(chartName, dataset, xName, yObjs, axisLables) {
         for (var y in yObjs) {
             yObjs[y].tooltip = focus.append("g").attr("class", `chartFocusPoint focus-for-${y}-in-${chartName}`);
             yObjs[y].tooltip.append("circle").style("stroke", "#33CC66").attr("r", 5); // Colors of the circles
-            yObjs[y].tooltip.append("rect").attr("x", 8).attr("y", "-5").attr("width", 22).attr("height", '0.75em');
+            yObjs[y].tooltip.append("rect").attr("x", 8).attr("y", "-5").attr("width", 60).attr("height", '0.75em');
             yObjs[y].tooltip.append("text").attr("x", 9).attr("dy", ".35em");
         }
 
@@ -245,7 +244,9 @@ function makeLineChart(chartName, dataset, xName, yObjs, axisLables) {
                     // Draw circle ONLY for the closest variable
                     yObjs[y].tooltip.style("display", "inline");
                     yObjs[y].tooltip.attr("transform", "translate(" + chartObj.xScale(chartObj.xFunct(d)) + "," + chartObj.yScale(yObjs[y].yFunct(d)) + ")");
-                    yObjs[y].tooltip.select("text").text(chartObj.yFormatter(yObjs[y].yFunct(d)));
+
+                    // The text on the tooltip
+                    yObjs[y].tooltip.select("text").text(`(${chartObj.xFunct(d)}, ${yObjs[y].yFunct(d)})`);
 
                     if (yObjs[y].legend !== undefined) { $(yObjs[y].legend._groups[0][0]).children().css("opacity", 1) };
                 } else {
@@ -271,6 +272,45 @@ function getDistance(p1, p2) {
     if (p1 === undefined || p2 === undefined) { return Number.MAX_VALUE };
 
     return Math.pow(p1[0] - p2[0], 2) + Math.pow(p1[1] - p2[1], 2)
+}
+
+function getYearsAndCounts (tracks) {
+    // Return array of JSON in the form of { "year": XXXX, "count": XXX }
+
+    var finalObj = [];
+
+    for (let i = 0; i < tracks.length; i++) {
+        // Skip song if it doesn't exist
+        if (tracks[i]?.track?.album?.release_date === undefined || tracks[i]?.track?.album?.release_date === null) { 
+            console.log("skipped song");
+            continue; 
+        }
+
+        var currYear = Math.floor(tracks[i].track.album.release_date.substring(0, 4));
+
+        // Find the year in the array
+        var yearIndex = finalObj.findIndex(function(item, i){
+            return item.year === currYear
+        });
+
+        if(yearIndex === -1) { // Doesn't exist in array
+            finalObj.push({
+                "year": currYear,
+                "count": 1
+            })
+        } else {
+            finalObj[yearIndex].count += 1;
+        }
+    }   
+
+    // Sort the array in increasing year
+    finalObj.sort(function(a, b) {
+        return a.year - b.year;
+    });
+
+    console.log(finalObj)
+
+    return finalObj
 }
 
 var data = [
@@ -528,19 +568,16 @@ var data = [
     }
 ]
 
-var chart = makeLineChart("chart1", data, 'year', {
-    'variableA': { column: 'variableA' },
-}, { xAxis: 'Years', yAxis: 'Amount' });
+var chart = makeLineChart("chart1", getYearsAndCounts(playlistOneTracks), 'year', {
+    'count': { column: 'count' },
+}, { xAxis: 'Year', yAxis: 'Count' });
 
 chart.bind("#chart1");
 chart.render();
 
-var chart2 = makeLineChart("chart2", data, 'year', {
-    'variableA': { column: 'variableA' },
-    'variableB': { column: 'variableB' },
-    'variableC': { column: 'variableC' },
-    'variableD': { column: 'variableD' }
-}, { xAxis: 'Years', yAxis: 'Amount' });
+var chart2 = makeLineChart("chart2", getYearsAndCounts(playlistTwoTracks), 'year', {
+    'count': { column: 'count' },
+}, { xAxis: 'Year', yAxis: 'Count' });
 
 chart2.bind("#chart2");
 chart2.render();
@@ -569,7 +606,6 @@ chart4.render();
 
 jQuery('.chooseDataButton').mouseover(function () {
     let chartName = this.id.substring(this.id.indexOf("button-for-") + 11);
-    console.log(chartName)
     let dataName = this.innerHTML;
 
     // Find lines belonging to that class

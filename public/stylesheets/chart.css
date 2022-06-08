@@ -109,7 +109,7 @@
 /* the dark rectangle behind the numbers that show when hovered */
 .chart-wrapper .focus rect {
     fill: #191414;
-    opacity: 0.4;
+    opacity: 0.8;
     border-radius: 2px;
 }
 

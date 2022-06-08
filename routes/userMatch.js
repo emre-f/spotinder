@@ -107,7 +107,8 @@ router.route('/validate')
         let userTwoSummary = await getSummaryInformation(accessToken, allUserTwoSongs)
 
         var [ playlistOneGenres, playlistTwoGenres ] = [ userOneSummary.genresArray, userTwoSummary.genresArray ]
-        var [ playlistOneSongCount, playlistTwoSongCount ] = [ userOneSummary.songCount, userTwoSummary.songCount ]
+        var [ playlistOneAllSongs, playlistTwoAllSongs ] = [ resultPlaylistOne.allSongs, resultPlaylistTwo.allSongs ]
+        var [ playlistOneSongCount, playlistTwoSongCount ] = [ resultPlaylistOne.allSongs.length, resultPlaylistTwo.allSongs.length ]
         var [ playlistOneArtistCount, playlistTwoArtistCount ] = [ userOneSummary.artistCount, userTwoSummary.artistCount ]
         var [ playlistOneGenreCount, playlistTwoGenreCount ] = [ userOneSummary.genreCount, userTwoSummary.genreCount ]
         var [ playlistOneRecentTracks, playlistTwoRecentTracks ] = [ userOneSummary.recentTracks, userTwoSummary.recentTracks ]
@@ -121,6 +122,7 @@ router.route('/validate')
             playlistOneData: userOneData, 
             playlistTwoData: userTwoData,
             playlistOneGenres, playlistTwoGenres,
+            playlistOneAllSongs, playlistTwoAllSongs,
             playlistOneSongCount, playlistTwoSongCount,
             playlistOneArtistCount, playlistTwoArtistCount,
             playlistOneGenreCount, playlistTwoGenreCount,
@@ -522,7 +524,7 @@ async function getSummaryInformation (accessToken, allSongs) {
     
     return { 
         genresArray,
-        songCount: allSongs.length,
+        allSongs,
         artistCount,
         genreCount: Object.keys(allGenres).length,
         recentTracks

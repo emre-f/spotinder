@@ -159,7 +159,9 @@
     <script>
         const dotColor = '#1DB954';
         let bothPlaylistsValid = false; // disable the button compare playlists if not, use jquery
-        let accessToken = document.getElementById('hiddenAccessToken')?.value;
+
+        var playlistOneTracks = <%- JSON.stringify(playlistOneAllSongs) %>; // Ignore error, it works
+        var playlistTwoTracks = <%- JSON.stringify(playlistTwoAllSongs) %>; // Ignore error, it works
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>

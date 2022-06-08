@@ -97,15 +97,17 @@ router.route('/validate')
         }
 
         // Used in other stages, it adds more to the .tracks array
-        let allPlaylistOneSongs = await getAllSongs(accessToken, playlistOneData, playlistOneOnlyIncludeOwnerSongs);
-        let allPlaylistTwoSongs = await getAllSongs(accessToken, playlistTwoData, playlistTwoOnlyIncludeOwnerSongs);
-
+        var allPlaylistOneSongs = await getAllSongs(accessToken, playlistOneData, playlistOneOnlyIncludeOwnerSongs);
+        var allPlaylistTwoSongs = await getAllSongs(accessToken, playlistTwoData, playlistTwoOnlyIncludeOwnerSongs);
+        
         resultPlaylistOne = await getSummaryInformation(accessToken, allPlaylistOneSongs)
         resultPlaylistTwo = await getSummaryInformation(accessToken, allPlaylistTwoSongs)
-
+ 
         var [ playlistOneGenres, playlistTwoGenres ] = [ resultPlaylistOne.genresArray, resultPlaylistTwo.genresArray ]
-        var [ playlistOneSongCount, playlistTwoSongCount ] = [ resultPlaylistOne.songCount, resultPlaylistTwo.songCount ]
+        var [ playlistOneAllSongs, playlistTwoAllSongs ] = [ allPlaylistOneSongs, allPlaylistTwoSongs ]
+        var [ playlistOneSongCount, playlistTwoSongCount ] = [ allPlaylistOneSongs.length, allPlaylistTwoSongs.length ]
         var [ playlistOneArtistCount, playlistTwoArtistCount ] = [ resultPlaylistOne.artistCount, resultPlaylistTwo.artistCount ]
+        var [ playlistOneAllArtists, playlistTwoAllArtists ] = [ resultPlaylistOne.allArtists, resultPlaylistTwo.allArtists ]
         var [ playlistOneGenreCount, playlistTwoGenreCount ] = [ resultPlaylistOne.genreCount, resultPlaylistTwo.genreCount ]
         var [ playlistOneRecentTracks, playlistTwoRecentTracks ] = [ resultPlaylistOne.recentTracks, resultPlaylistTwo.recentTracks ]
         // MATCHING INFO
@@ -116,9 +118,15 @@ router.route('/validate')
             accessTokenPresent, 
             playlistOneData, playlistTwoData,
             playlistOneGenres, playlistTwoGenres,
+
+            playlistOneAllSongs, playlistTwoAllSongs,
             playlistOneSongCount, playlistTwoSongCount,
+
             playlistOneArtistCount, playlistTwoArtistCount,
+
             playlistOneGenreCount, playlistTwoGenreCount,
+            playlistOneAllArtists, playlistTwoAllArtists,
+
             playlistOneRecentTracks, playlistTwoRecentTracks,
             matchingSongs: resultMatchingInfo.matchingSongs,
             matchingArtists: resultMatchingInfo.matchingArtists,
@@ -383,6 +391,11 @@ async function getSummaryInformation (accessToken, playlistSongs) {
     var allArtists = []
 
     for (let i = 0; i < ids.length; i++) {
+        if(ids[i] === "") {  // Skip empty id
+            console.log("skipped empty ID") 
+            continue; 
+        } 
+
         try {
             axiosResponse = await axios.get(`https://api.spotify.com/v1/artists?ids=${ids[i]}`, { 
                 headers: {
@@ -432,13 +445,13 @@ async function getSummaryInformation (accessToken, playlistSongs) {
     artistCount.sort(function(a, b) {
         return b[1] - a[1];
     });
-    
+
     return { 
         genresArray,
-        songCount: playlistSongs.length,
         artistCount,
         genreCount: Object.keys(allGenres).length,
-        recentTracks
+        recentTracks,
+        allArtists
     }
 }
 
