@@ -108,7 +108,6 @@ router.route('/validate')
         var [ playlistOneArtistCount, playlistTwoArtistCount ] = [ resultPlaylistOne.artistCount, resultPlaylistTwo.artistCount ]
         var [ playlistOneGenreCount, playlistTwoGenreCount ] = [ resultPlaylistOne.genreCount, resultPlaylistTwo.genreCount ]
         var [ playlistOneRecentTracks, playlistTwoRecentTracks ] = [ resultPlaylistOne.recentTracks, resultPlaylistTwo.recentTracks ]
-
         // MATCHING INFO
         resultMatchingInfo = await getMatchingInformation(allPlaylistOneSongs, allPlaylistTwoSongs, resultPlaylistOne, resultPlaylistTwo)
 
@@ -128,6 +127,10 @@ router.route('/validate')
             playlistOneName: playlistOneData.name, playlistTwoName: playlistTwoData.name,
             playlistOneOwnerName: playlistOneData.owner.display_name, playlistTwoOwnerName: playlistTwoData.owner.display_name, 
             playlistOneFollowerCount: playlistOneData.followers.total, playlistTwoFollowerCount: playlistTwoData.followers.total,
+            linkToMainOne: playlistOneData.external_urls.spotify, linkToMainTwo: playlistTwoData.external_urls.spotify,
+
+            linkToOwnerOne: playlistOneData.owner.external_urls.spotify, linkToOwnerTwo: playlistTwoData.owner.external_urls.spotify,
+            linkToOwnerOneExists: true, linkToOwnerTwoExists: true,
 
             returnPoint: "/playlists"
         })
@@ -141,8 +144,6 @@ async function getAllSongs (accessToken, playlistData, onlyOwnerSongs) {
 
     for (let i = 0; i < playlistData.tracks.items.length; i++) {
         let track = playlistData.tracks.items[i];
-
-        if (Math.floor(track.track.album.release_date.substring(1, 5)) < 2000) { console.log(track) };
 
         if (onlyOwnerSongs && track.added_by.id !== playlistData.owner.id) {
             continue;

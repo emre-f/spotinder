@@ -24,12 +24,16 @@
                             alt="artistImage" />
     
                         <p class="possibleOverflowRight" style="margin-bottom: 0;"> 
-                            <span class="artistName lead"> <%= matchingSongs[i].track.name %> </span> 
+                            <a href="<%= matchingSongs[i].track.external_urls.spotify %>" target="_blank">
+                                <span class="artistName lead"> <%= matchingSongs[i].track.name %> </span> 
+                            </a>
                         </p>
               
                         <p class="possibleOverflowRight" style="clear:both; margin-bottom: 0;"> 
                             <span class="countValue lead" style="font-size:1.1rem;"> 
-                                <%= matchingSongs[i].track.artists[0].name %> 
+                                <a href="<%= matchingSongs[i].track.artists[0].external_urls.spotify %>" target="_blank">
+                                    <%= matchingSongs[i].track.artists[0].name %> 
+                                </a>
                             </span> 
                         </p>
                         
@@ -67,7 +71,9 @@
                             alt="artistImage" />
     
                         <p class="possibleOverflowRight" style="margin-bottom: 0;"> 
-                            <span class="artistName lead"> <%= matchingArtists[i].artist.name %> </span> 
+                            <a href="<%= matchingArtists[i].artist.external_urls.spotify %>" target="_blank">
+                                <span class="artistName lead"> <%= matchingArtists[i].artist.name %> </span> 
+                            </a>
                         </p>
               
                         <p class="possibleOverflowRight" style="clear:both; margin-bottom: 0;"> 
