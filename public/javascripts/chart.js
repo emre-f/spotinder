@@ -635,7 +635,15 @@ jQuery('.chooseDataButton').mouseover(function () {
 jQuery('.chart-wrapper').mouseleave(function () {
     let chartName = $(this).attr("id");
 
+    // Reset all lines/paths
     $(`path[id$="${chartName}"]`).each(function (i, el) {
         $(el).css("stroke", "rgba(51, 204, 102, 1)");
+    });
+
+    // Reset all buttons
+    $('.chooseDataButton').each(function (i, el) {
+        if ($(el).attr("id").substring(this.id.indexOf("button-for-") + 11) === chartName) //Find correct chart
+
+        $(el).css("opacity", "1");
     });
 });
