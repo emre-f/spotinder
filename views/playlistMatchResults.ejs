@@ -134,8 +134,9 @@
 
             <hr class="rounded">
 
-            <!-- GENRE COUNTS OVER TIME -->
-            <h1 class="chartTitle">Trends of Top Genres over Time</h1>
+            <!-- SONG COUNT OVER TIME -->
+            <h1 class="chartTitle">Playlist Size Over Time</h1>
+            <p style="font-style:italic">*Not accounting for removed songs*</p>
             <div class="row">
                 <div class="col-sm-6" style="padding:10px;">
                     <div class="chart-wrapper" id="chart3"></div>
@@ -143,6 +144,20 @@
                 
                 <div class="col-sm-6" style="padding:10px;">
                     <div class="chart-wrapper" id="chart4"></div>
+                </div>
+            </div>
+
+            <hr class="rounded">
+
+            <!-- GENRE COUNTS OVER TIME -->
+            <h1 class="chartTitle">Trends of Top Genres over Time</h1>
+            <div class="row">
+                <div class="col-sm-6" style="padding:10px;">
+                    <div class="chart-wrapper" id="chart5"></div>
+                </div>
+                
+                <div class="col-sm-6" style="padding:10px;">
+                    <div class="chart-wrapper" id="chart6"></div>
                 </div>
             </div>
 
@@ -161,7 +176,13 @@
         let bothPlaylistsValid = false; // disable the button compare playlists if not, use jquery
 
         var playlistOneTracks = <%- JSON.stringify(playlistOneAllSongs) %>; // Ignore error, it works
+        var playlistOneArtists = <%- JSON.stringify(playlistOneAllArtists) %>;
+
         var playlistTwoTracks = <%- JSON.stringify(playlistTwoAllSongs) %>; // Ignore error, it works
+        var playlistTwoArtists = <%- JSON.stringify(playlistTwoAllArtists) %>;
+
+        var playlistOneGenres = <%- JSON.stringify(playlistOneGenres) %>;
+        var playlistTwoGenres = <%- JSON.stringify(playlistTwoGenres) %>;
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
