@@ -1,10 +1,10 @@
-function makeLineChart(chartName, dataset, xName, yObjs, axisLables) {
+function makeLineChart(chartName, dataset, xName, yObjs, axisLabels, yearAndMonth) {
 
     // chartObj is the main object that is returned
     var chartObj = {};
     var color = d3.scaleOrdinal(d3.schemeCategory10);
-    chartObj.xAxisLable = axisLables.xAxis;
-    chartObj.yAxisLable = axisLables.yAxis;
+    chartObj.xAxisLable = axisLabels.xAxis;
+    chartObj.yAxisLable = axisLabels.yAxis;
 
     // Add some values onto chartObj
     chartObj.data = dataset;
@@ -308,8 +308,157 @@ function getYearsAndCounts (tracks) {
         return a.year - b.year;
     });
 
-    console.log(finalObj)
+    return finalObj
+}
 
+function getPlaylistActivity (tracks) {
+    // Sort the tracks in terms of added date
+    tracks.sort(function(a,b){
+        return new Date(a.added_at) - new Date(b.added_at);
+    });
+    
+    var finalObj = []
+
+    // Tracks already come in sorted
+    for (let i = 0; i < tracks.length; i++) {
+        if (tracks[i]?.track?.album?.release_date === undefined || tracks[i]?.track?.album?.release_date === null) { 
+            console.log("skipped song");
+            continue; 
+        }
+
+        var currYear = Math.floor(tracks[i].added_at.substring(0, 4));
+        var currMonth = Math.floor(tracks[i].added_at.substring(5, 7));
+        // console.log(`Current time: ${currYear} and ${currMonth}`);
+
+        // Find the year in the array
+        var ind = finalObj.findIndex(function(item, i){
+            return item.year === currYear && item.month === currMonth 
+        });
+
+        if(ind === -1) { // Doesn't exist in array
+
+            if (finalObj.length === 0) { // First element
+                var finalCount = 1;
+                var xVal = 0;
+            } else {
+                /*
+                console.log(`Current time: ${currYear} and ${currMonth}. Previous time: ${finalObj[finalObj.length - 1].year} and ${finalObj[finalObj.length - 1].month}`)
+                console.log(`xVal before: ${xVal}, xVal after: ${finalObj[finalObj.length - 1].x + 
+                    12 * (currYear - finalObj[finalObj.length - 1].year) +
+                    (currMonth - finalObj[finalObj.length - 1].month)}`)
+                */
+                var finalCount = finalObj[finalObj.length - 1].count + 1; // Get the count of last item
+                var xVal = finalObj[finalObj.length - 1].x + 
+                           12 * (currYear - finalObj[finalObj.length - 1].year) +
+                           (currMonth - finalObj[finalObj.length - 1].month);
+            }
+
+            finalObj.push({
+                "year": currYear,
+                "month": currMonth,
+                "count": finalCount,
+                "x": xVal
+            })
+        } else {
+            finalObj[ind].count += 1;
+        }
+    }
+    return finalObj
+}
+
+function getPlaylistGenreCount (tracks, artists, genresToTrack) {
+
+    // Sort the tracks in terms of added date
+    tracks.sort(function(a,b){
+        return new Date(a.added_at) - new Date(b.added_at);
+    });
+    
+    var finalObj = []
+
+    var firstItem = {"x": 0, "year": 0, "month": 0};
+
+    for (let i in genresToTrack) {
+        firstItem[genresToTrack[i][0]] = 0;
+    }
+    console.log("FIRST ITEM: ", firstItem)
+    finalObj.push(firstItem);
+
+    // Tracks already come in sorted
+    for (let i = 0; i < tracks.length; i++) {
+        if (tracks[i]?.track?.album?.release_date === undefined || tracks[i]?.track?.album?.release_date === null) { 
+            console.log("skipped song");
+            continue; 
+        }
+
+        var currYear = Math.floor(tracks[i].added_at.substring(0, 4));
+        var currMonth = Math.floor(tracks[i].added_at.substring(5, 7));
+        // console.log("Date: ", currYear, currMonth)
+
+        // Get this songs genres first:
+        let artistId = tracks[i].track.artists[0].id;
+
+        // Find the artist in the artists array to get their genres
+        var artistInd = artists.findIndex(function(item, i) {
+            if (item?.id === null || item?.id === undefined) return false; // Artist with no ID, can't be it
+
+            return item.id === artistId
+        })
+
+        // If artist not found, skip !!
+        if (artistInd === -1) { 
+            console.log("Artist with ID not found, skipping !!!");
+            continue;
+        }
+
+        // Get that artist's genres
+        var currGenres = artists[artistInd].genres;
+
+        for (c in currGenres) {
+            currGenres[c] = currGenres[c].replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase()); // capitalize first letters
+        }
+
+        // Find the year in the array
+        var ind = finalObj.findIndex(function(item, i){
+            return item.year === currYear && item.month === currMonth 
+        });
+        
+        if(ind === -1) { // Doesn't exist in array
+            currObj = {};
+
+            // For each genre, get their count from last item, and then add this songs genres too
+            for (k in genresToTrack) {
+                currObj[genresToTrack[k][0]] = finalObj[finalObj.length - 1][genresToTrack[k][0]];
+
+                if(currGenres.indexOf(genresToTrack[k][0]) !== -1) { // THIS song also has this genre, add +1
+                    currObj[genresToTrack[k][0]] += 1;
+                }
+            }
+
+            if(finalObj.length === 1) {
+                var xVal = 1;
+            } else {
+                var xVal = finalObj[finalObj.length - 1].x + 
+                       12 * (currYear - finalObj[finalObj.length - 1].year) +
+                       (currMonth - finalObj[finalObj.length - 1].month);
+            }
+
+            currObj.x = xVal;
+            currObj.year = currYear;
+            currObj.month = currMonth;
+
+            finalObj.push(currObj)
+        } else {
+            // For each genre, check if current song has the genre
+            for (k in genresToTrack) {
+                if(currGenres.indexOf(genresToTrack[k][0]) !== -1) { // THIS song also has this genre, add +1
+                    finalObj[ind][genresToTrack[k][0]] += 1;
+                }
+            }
+        }
+
+        console.log(finalObj)
+    }
+    console.log (finalObj)
     return finalObj
 }
 
@@ -582,25 +731,70 @@ var chart2 = makeLineChart("chart2", getYearsAndCounts(playlistTwoTracks), 'year
 chart2.bind("#chart2");
 chart2.render();
 
-var chart3 = makeLineChart("chart3", data, 'year', {
-    'variableA': { column: 'variableA' },
-    'variableB': { column: 'variableB' },
-    'variableC': { column: 'variableC' },
-    'variableD': { column: 'variableD' }
-}, { xAxis: 'Years', yAxis: 'Amount' });
+var chart3 = makeLineChart("chart3", 
+                           getPlaylistActivity(playlistOneTracks), 
+                           'x', 
+                           { 'count': { column: 'count' }, }, 
+                           { xAxis: 'Months since Creation', yAxis: 'Amount' },
+                           true);
 
 chart3.bind("#chart3");
 chart3.render();
 
-var chart4 = makeLineChart("chart4", data, 'year', {
+var chart4 = makeLineChart("chart4", 
+                           getPlaylistActivity(playlistTwoTracks), 
+                           'x', 
+                           { 'count': { column: 'count' }, }, 
+                           { xAxis: 'Months since Creation', yAxis: 'Amount' },
+                           true);
+
+chart4.bind("#chart4");
+chart4.render();
+
+// Showing top genres
+
+//Get the top 5 genres first
+var playlistOneTopGenresObject = {};
+var playlistTwoTopGenresObject = {};
+
+for (let i = 0; i < Math.min(5, playlistOneGenres.length); i++) {
+    playlistOneTopGenresObject[playlistOneGenres[i][0]] = { column: playlistOneGenres[i][0]}
+}
+
+for (let i = 0; i < Math.min(5, playlistTwoGenres.length); i++) {
+    playlistTwoTopGenresObject[playlistTwoGenres[i][0]] = { column: playlistTwoGenres[i][0]}
+}
+
+var chart5 = makeLineChart("chart5", 
+                           getPlaylistGenreCount (playlistOneTracks, playlistOneArtists, playlistOneGenres.slice(0, 5)), 
+                           'x', 
+                           playlistOneTopGenresObject, 
+                           { xAxis: 'Months since Creation', yAxis: '# of Songs with Genre' });
+
+chart5.bind("#chart5");
+chart5.render();
+
+var chart6 = makeLineChart("chart6", 
+                           getPlaylistGenreCount (playlistTwoTracks, playlistTwoArtists, playlistTwoGenres.slice(0, 5)), 
+                           'x', 
+                           playlistTwoTopGenresObject, 
+                           { xAxis: 'Months since Creation', yAxis: '# of Songs with Genre' });
+
+chart6.bind("#chart6");
+chart6.render();
+
+// Fake plot example here
+/*
+var chart6 = makeLineChart("chart6", data, 'year', {
     'variableA': { column: 'variableA' },
     'variableB': { column: 'variableB' },
     'variableC': { column: 'variableC' },
     'variableD': { column: 'variableD' }
-}, { xAxis: 'Years', yAxis: 'Amount' });
+}, { xAxis: 'Years', yAxis: '# of Songs' });
 
-chart4.bind("#chart4");
-chart4.render();
+chart6.bind("#chart6");
+chart6.render();
+*/
 
 // SUPPORTING FUNCTIONS
 
