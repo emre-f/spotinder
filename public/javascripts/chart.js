@@ -735,7 +735,7 @@ var chart3 = makeLineChart("chart3",
                            getPlaylistActivity(playlistOneTracks), 
                            'x', 
                            { 'count': { column: 'count' }, }, 
-                           { xAxis: 'Months since Creation', yAxis: 'Amount' },
+                           { xAxis: 'Months since Creation', yAxis: '# of Songs' },
                            true);
 
 chart3.bind("#chart3");
@@ -745,7 +745,7 @@ var chart4 = makeLineChart("chart4",
                            getPlaylistActivity(playlistTwoTracks), 
                            'x', 
                            { 'count': { column: 'count' }, }, 
-                           { xAxis: 'Months since Creation', yAxis: 'Amount' },
+                           { xAxis: 'Months since Creation', yAxis: '# of Songs' },
                            true);
 
 chart4.bind("#chart4");
