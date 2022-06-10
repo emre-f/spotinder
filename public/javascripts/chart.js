@@ -456,9 +456,9 @@ function getPlaylistGenreCount (tracks, artists, genresToTrack) {
             }
         }
 
-        console.log(finalObj)
+        // console.log(finalObj)
     }
-    console.log (finalObj)
+    // console.log (finalObj)
     return finalObj
 }
 

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotify Matchmaker</title>
+    <title>Musical Matchmaker</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
         integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
     <link rel="stylesheet" href="/stylesheets/home.css">
@@ -16,7 +16,17 @@
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
         <header class="mb-auto">
             <div>
-                <h3 class="float-md-left mb-0">Spotify Matchmaker</h3>
+                <div class="float-md-left">
+                    <table>
+                        <tr>
+                            <h3  class="mb-0"> Musical Matchmaker </h3> 
+                        </tr>
+                        <tr>
+                            <h3 class="mb-0" style="font-size:1.2rem">Powered by <img class="img" src="/spotify-logo.png" style="margin:0;" width="100px"> Web API</h3>
+                        </tr>
+                    </table>
+                </div>
+                
                 <nav class="nav nav-masthead justify-content-center float-md-right">
                     <a class="nav-link active" aria-current="page" href="/">Home</a>
                     <% if(!accessTokenPresent) { %>
@@ -28,10 +38,10 @@
             </div>
         </header>
         <main class="px-3">
-            <h1>Spotify Matchmaker</h1>
+            <h1>Musical Matchmaker</h1>
             <p class="lead"> 
-                Welcome to Spotify Matchmaker! <br> 
-                See how well two playlists or users match
+                Welcome to Musical Matchmaker! <br> 
+                See how well two playlists or users in Spotify match
             </p>
 
             <div style="text-align: center;">

@@ -1,5 +1,5 @@
 {
-  "name": "spotify-matchmaker",
+  "name": "musical-matchmaker",
   "version": "1.0.0",
   "description": "Using Spotify's Web API and some magic to tell how good two users or playlists match.",
   "main": "app.js",
