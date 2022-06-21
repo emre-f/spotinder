@@ -197,7 +197,7 @@ async function getAllSongs (accessToken, userId, onlyPersonal = false, onlyUserA
             continue; 
         }
 
-        await delay(100);
+        // await delay(100);
 
         let playlistSongs = await getAllPlaylistSongs(accessToken, playlistData, userId , onlyUserAddedSongs);
         allTracks.push.apply(allTracks, playlistSongs)
